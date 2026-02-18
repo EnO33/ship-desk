@@ -1,39 +1,22 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { auth, currentUser } from '@clerk/tanstack-react-start/server'
+import { auth } from '@clerk/tanstack-react-start/server'
 import { Header } from '@/components/layout/header'
-import { db } from '@/db'
-import { users } from '@/db/schema'
+import { upsertUser } from '@/server/functions/users'
 
-const syncAndGetUser = createServerFn({ method: 'GET' }).handler(async () => {
+const ensureAuthed = createServerFn({ method: 'GET' }).handler(async () => {
   const { userId } = await auth()
   if (!userId) return null
 
-  const clerk = await currentUser()
-  if (!clerk) return null
-
-  const email = clerk.emailAddresses[0]?.emailAddress ?? ''
-  const name = [clerk.firstName, clerk.lastName].filter(Boolean).join(' ')
-
-  await db
-    .insert(users)
-    .values({
-      clerkId: userId,
-      email,
-      name: name || null,
-      avatarUrl: clerk.imageUrl ?? null,
-    })
-    .onConflictDoUpdate({
-      target: users.clerkId,
-      set: { email, name: name || null, avatarUrl: clerk.imageUrl ?? null },
-    })
+  // Upsert a minimal user record so the user row exists
+  await upsertUser({ data: { clerkId: userId, email: '' } })
 
   return { userId }
 })
 
 export const Route = createFileRoute('/_authed')({
   beforeLoad: async () => {
-    const result = await syncAndGetUser()
+    const result = await ensureAuthed()
     if (!result) {
       throw redirect({ to: '/' })
     }
