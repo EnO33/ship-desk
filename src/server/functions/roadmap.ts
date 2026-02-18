@@ -12,7 +12,7 @@ import { authMiddleware } from '@/server/middleware/auth'
 type RoadmapItem = typeof roadmapItems.$inferSelect
 
 export const getRoadmapItems = createServerFn({ method: 'GET' })
-  .validator((projectId: number) => projectId)
+  .inputValidator((projectId: number) => projectId)
   .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<RoadmapItem[]>> => {
     const items = await db
@@ -25,7 +25,7 @@ export const getRoadmapItems = createServerFn({ method: 'GET' })
   })
 
 export const createRoadmapItem = createServerFn({ method: 'POST' })
-  .validator(createRoadmapItemSchema)
+  .inputValidator(createRoadmapItemSchema)
   .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
     const [item] = await db.insert(roadmapItems).values(data).returning()
@@ -34,7 +34,7 @@ export const createRoadmapItem = createServerFn({ method: 'POST' })
   })
 
 export const updateRoadmapItem = createServerFn({ method: 'POST' })
-  .validator(updateRoadmapItemSchema)
+  .inputValidator(updateRoadmapItemSchema)
   .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
     const { id, ...updates } = data
@@ -49,7 +49,7 @@ export const updateRoadmapItem = createServerFn({ method: 'POST' })
   })
 
 export const deleteRoadmapItem = createServerFn({ method: 'POST' })
-  .validator((id: number) => id)
+  .inputValidator((id: number) => id)
   .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
@@ -62,7 +62,7 @@ export const deleteRoadmapItem = createServerFn({ method: 'POST' })
   })
 
 export const getPublicRoadmap = createServerFn({ method: 'GET' })
-  .validator((slug: string) => slug)
+  .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<Result<{ project: typeof projects.$inferSelect; items: RoadmapItem[] }>> => {
     const [project] = await db
       .select()

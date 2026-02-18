@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
 
 export const getUserByClerkId = createServerFn({ method: 'GET' })
-  .validator((clerkId: string) => clerkId)
+  .inputValidator((clerkId: string) => clerkId)
   .handler(async ({ data: clerkId }): Promise<Result<typeof users.$inferSelect>> => {
     const [user] = await db
       .select()
@@ -18,7 +18,7 @@ export const getUserByClerkId = createServerFn({ method: 'GET' })
   })
 
 export const upsertUser = createServerFn({ method: 'POST' })
-  .validator(
+  .inputValidator(
     (data: { clerkId: string; email: string; name?: string; avatarUrl?: string }) => data,
   )
   .handler(async ({ data }): Promise<Result<typeof users.$inferSelect>> => {

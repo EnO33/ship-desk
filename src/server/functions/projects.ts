@@ -29,7 +29,7 @@ export const getProjects = createServerFn({ method: 'GET' })
   })
 
 export const getProject = createServerFn({ method: 'GET' })
-  .validator((projectId: string) => projectId)
+  .inputValidator((projectId: string) => projectId)
   .middleware([authMiddleware])
   .handler(async ({ data: projectId, context }): Promise<Result<Project>> => {
     const [user] = await db
@@ -53,7 +53,7 @@ export const getProject = createServerFn({ method: 'GET' })
   })
 
 export const createProject = createServerFn({ method: 'POST' })
-  .validator(createProjectSchema)
+  .inputValidator(createProjectSchema)
   .middleware([authMiddleware])
   .handler(async ({ data, context }): Promise<Result<Project>> => {
     const [user] = await db
@@ -82,7 +82,7 @@ export const createProject = createServerFn({ method: 'POST' })
   })
 
 export const deleteProject = createServerFn({ method: 'POST' })
-  .validator((projectId: number) => projectId)
+  .inputValidator((projectId: number) => projectId)
   .middleware([authMiddleware])
   .handler(async ({ data: projectId, context }): Promise<Result<boolean>> => {
     const [user] = await db

@@ -9,7 +9,7 @@ import { authMiddleware } from '@/server/middleware/auth'
 type Feedback = typeof feedbacks.$inferSelect
 
 export const getFeedbacks = createServerFn({ method: 'GET' })
-  .validator((projectId: number) => projectId)
+  .inputValidator((projectId: number) => projectId)
   .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<Feedback[]>> => {
     const result = await db
@@ -22,7 +22,7 @@ export const getFeedbacks = createServerFn({ method: 'GET' })
   })
 
 export const updateFeedbackStatus = createServerFn({ method: 'POST' })
-  .validator((data: { id: number; status: string }) => data)
+  .inputValidator((data: { id: number; status: string }) => data)
   .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Feedback>> => {
     const [updated] = await db
@@ -36,7 +36,7 @@ export const updateFeedbackStatus = createServerFn({ method: 'POST' })
   })
 
 export const deleteFeedback = createServerFn({ method: 'POST' })
-  .validator((id: number) => id)
+  .inputValidator((id: number) => id)
   .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
@@ -51,7 +51,7 @@ export const deleteFeedback = createServerFn({ method: 'POST' })
 // Public endpoints (no auth required)
 
 export const getPublicFeedbacks = createServerFn({ method: 'GET' })
-  .validator((slug: string) => slug)
+  .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<Result<{ project: typeof projects.$inferSelect; feedbacks: Feedback[] }>> => {
     const [project] = await db
       .select()
@@ -71,7 +71,7 @@ export const getPublicFeedbacks = createServerFn({ method: 'GET' })
   })
 
 export const submitFeedback = createServerFn({ method: 'POST' })
-  .validator(createFeedbackSchema)
+  .inputValidator(createFeedbackSchema)
   .handler(async ({ data }): Promise<Result<Feedback>> => {
     const [project] = await db
       .select()
@@ -96,7 +96,7 @@ export const submitFeedback = createServerFn({ method: 'POST' })
   })
 
 export const voteFeedback = createServerFn({ method: 'POST' })
-  .validator(voteFeedbackSchema)
+  .inputValidator(voteFeedbackSchema)
   .handler(async ({ data }): Promise<Result<boolean>> => {
     const [existing] = await db
       .select()

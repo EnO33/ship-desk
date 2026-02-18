@@ -9,7 +9,7 @@ import { authMiddleware } from '@/server/middleware/auth'
 type Changelog = typeof changelogs.$inferSelect
 
 export const getChangelogs = createServerFn({ method: 'GET' })
-  .validator((projectId: number) => projectId)
+  .inputValidator((projectId: number) => projectId)
   .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<Changelog[]>> => {
     const result = await db
@@ -22,7 +22,7 @@ export const getChangelogs = createServerFn({ method: 'GET' })
   })
 
 export const createChangelog = createServerFn({ method: 'POST' })
-  .validator(createChangelogSchema)
+  .inputValidator(createChangelogSchema)
   .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Changelog>> => {
     const publishedAt =
@@ -38,7 +38,7 @@ export const createChangelog = createServerFn({ method: 'POST' })
   })
 
 export const updateChangelog = createServerFn({ method: 'POST' })
-  .validator(updateChangelogSchema)
+  .inputValidator(updateChangelogSchema)
   .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Changelog>> => {
     const { id, ...updates } = data
@@ -56,7 +56,7 @@ export const updateChangelog = createServerFn({ method: 'POST' })
   })
 
 export const deleteChangelog = createServerFn({ method: 'POST' })
-  .validator((id: number) => id)
+  .inputValidator((id: number) => id)
   .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
@@ -69,7 +69,7 @@ export const deleteChangelog = createServerFn({ method: 'POST' })
   })
 
 export const getPublicChangelogs = createServerFn({ method: 'GET' })
-  .validator((slug: string) => slug)
+  .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }): Promise<Result<{ project: typeof projects.$inferSelect; entries: Changelog[] }>> => {
     const [project] = await db
       .select()
