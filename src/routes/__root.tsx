@@ -46,7 +46,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function RootLayout() {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
       <TooltipProvider>
         <Outlet />
         <Toaster richColors position="bottom-right" />
