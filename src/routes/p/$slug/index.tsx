@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { Rocket } from 'lucide-react'
+
 import { getPublicChangelogs } from '@/server/functions/changelogs'
 import { APP_NAME } from '@/lib/constants'
 
@@ -82,7 +80,7 @@ function PublicChangelogPage() {
               <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
                 {entry.content}
               </p>
-              <Separator className="mt-8" />
+              <hr className="mt-8" />
             </article>
           ))}
         </div>
