@@ -1,0 +1,101 @@
+{
+  "common": {
+    "appName": "ShipDesk",
+    "loading": "Laden...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "back": "Zurück",
+    "search": "Suchen...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "error": "Etwas ist schiefgelaufen",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden"
+  },
+  "landing": {
+    "hero": {
+      "title": "Die Kommandozentrale deines Produkts",
+      "subtitle": "Changelog, Roadmap & Feedback — alles an einem Ort. Halte deine Nutzer informiert und baue, was zählt.",
+      "cta": "Kostenlos starten"
+    },
+    "features": {
+      "changelog": {
+        "title": "Wunderschöne Changelogs",
+        "description": "Teile deine Updates mit ansprechenden, öffentlichen Changelog-Seiten, die deine Nutzer lieben werden."
+      },
+      "roadmap": {
+        "title": "Öffentliche Roadmap",
+        "description": "Zeige deinen Nutzern, was als Nächstes kommt, mit einem interaktiven Kanban-Board."
+      },
+      "feedback": {
+        "title": "Nutzer-Feedback",
+        "description": "Sammle und priorisiere Feature-Anfragen. Lass deine Community abstimmen."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "projects": "Projekte",
+    "newProject": "Neues Projekt",
+    "noProjects": "Noch keine Projekte. Erstelle dein erstes!"
+  },
+  "project": {
+    "name": "Projektname",
+    "slug": "Slug",
+    "description": "Beschreibung",
+    "create": "Projekt erstellen",
+    "settings": "Einstellungen",
+    "changelog": "Changelog",
+    "roadmap": "Roadmap",
+    "feedback": "Feedback",
+    "public": "Öffentlich",
+    "private": "Privat"
+  },
+  "changelog": {
+    "title": "Changelog",
+    "new": "Neuer Eintrag",
+    "version": "Version",
+    "content": "Inhalt",
+    "status": {
+      "draft": "Entwurf",
+      "published": "Veröffentlicht"
+    },
+    "publish": "Veröffentlichen",
+    "noEntries": "Noch keine Changelog-Einträge."
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "newItem": "Neues Element",
+    "status": {
+      "planned": "Geplant",
+      "in_progress": "In Arbeit",
+      "done": "Erledigt"
+    },
+    "noItems": "Noch keine Roadmap-Elemente."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "submit": "Feedback senden",
+    "yourName": "Dein Name",
+    "yourEmail": "Deine E-Mail (optional)",
+    "feedbackTitle": "Titel",
+    "feedbackDescription": "Beschreibung",
+    "category": {
+      "feature": "Feature-Anfrage",
+      "bug": "Fehlerbericht",
+      "improvement": "Verbesserung"
+    },
+    "status": {
+      "open": "Offen",
+      "under_review": "In Prüfung",
+      "planned": "Geplant",
+      "closed": "Geschlossen"
+    },
+    "vote": "Abstimmen",
+    "votes": "Stimmen",
+    "noFeedback": "Noch kein Feedback. Sei der Erste!"
+  }
+}

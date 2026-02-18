@@ -1,0 +1,101 @@
+{
+  "common": {
+    "appName": "ShipDesk",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "back": "Volver",
+    "search": "Buscar...",
+    "noResults": "Sin resultados",
+    "error": "Algo salió mal",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar sesión"
+  },
+  "landing": {
+    "hero": {
+      "title": "El centro de control de tu producto",
+      "subtitle": "Changelog, Roadmap y Feedback — todo en un solo lugar. Mantén a tus usuarios informados y construye lo que importa.",
+      "cta": "Empieza gratis"
+    },
+    "features": {
+      "changelog": {
+        "title": "Changelogs hermosos",
+        "description": "Comparte lo que has lanzado con páginas de changelog públicas que tus usuarios adorarán."
+      },
+      "roadmap": {
+        "title": "Roadmap pública",
+        "description": "Muestra a tus usuarios lo que viene con un tablero kanban interactivo."
+      },
+      "feedback": {
+        "title": "Feedback de usuarios",
+        "description": "Recopila y prioriza solicitudes de funcionalidades. Deja que tu comunidad vote."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "projects": "Proyectos",
+    "newProject": "Nuevo proyecto",
+    "noProjects": "No hay proyectos aún. ¡Crea el primero!"
+  },
+  "project": {
+    "name": "Nombre del proyecto",
+    "slug": "Slug",
+    "description": "Descripción",
+    "create": "Crear proyecto",
+    "settings": "Configuración",
+    "changelog": "Changelog",
+    "roadmap": "Roadmap",
+    "feedback": "Feedback",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "changelog": {
+    "title": "Changelog",
+    "new": "Nueva entrada",
+    "version": "Versión",
+    "content": "Contenido",
+    "status": {
+      "draft": "Borrador",
+      "published": "Publicado"
+    },
+    "publish": "Publicar",
+    "noEntries": "No hay entradas de changelog."
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "newItem": "Nuevo elemento",
+    "status": {
+      "planned": "Planificado",
+      "in_progress": "En progreso",
+      "done": "Terminado"
+    },
+    "noItems": "No hay elementos en la roadmap."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "submit": "Enviar feedback",
+    "yourName": "Tu nombre",
+    "yourEmail": "Tu email (opcional)",
+    "feedbackTitle": "Título",
+    "feedbackDescription": "Descripción",
+    "category": {
+      "feature": "Solicitud de funcionalidad",
+      "bug": "Reporte de error",
+      "improvement": "Mejora"
+    },
+    "status": {
+      "open": "Abierto",
+      "under_review": "En revisión",
+      "planned": "Planificado",
+      "closed": "Cerrado"
+    },
+    "vote": "Votar",
+    "votes": "votos",
+    "noFeedback": "No hay feedback aún. ¡Sé el primero!"
+  }
+}

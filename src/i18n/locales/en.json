@@ -1,0 +1,101 @@
+{
+  "common": {
+    "appName": "ShipDesk",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "search": "Search...",
+    "noResults": "No results found",
+    "error": "Something went wrong",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out"
+  },
+  "landing": {
+    "hero": {
+      "title": "Your product's command center",
+      "subtitle": "Changelog, Roadmap & Feedback — all in one place. Keep your users in the loop and build what matters.",
+      "cta": "Get Started for Free"
+    },
+    "features": {
+      "changelog": {
+        "title": "Beautiful Changelogs",
+        "description": "Share what you've shipped with stunning, public changelog pages your users will love."
+      },
+      "roadmap": {
+        "title": "Public Roadmap",
+        "description": "Show your users what's coming next with an interactive kanban-style roadmap board."
+      },
+      "feedback": {
+        "title": "User Feedback",
+        "description": "Collect and prioritize feature requests. Let your community vote on what matters most."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "projects": "Projects",
+    "newProject": "New Project",
+    "noProjects": "No projects yet. Create your first one!"
+  },
+  "project": {
+    "name": "Project Name",
+    "slug": "Slug",
+    "description": "Description",
+    "create": "Create Project",
+    "settings": "Settings",
+    "changelog": "Changelog",
+    "roadmap": "Roadmap",
+    "feedback": "Feedback",
+    "public": "Public",
+    "private": "Private"
+  },
+  "changelog": {
+    "title": "Changelog",
+    "new": "New Entry",
+    "version": "Version",
+    "content": "Content",
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "publish": "Publish",
+    "noEntries": "No changelog entries yet."
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "newItem": "New Item",
+    "status": {
+      "planned": "Planned",
+      "in_progress": "In Progress",
+      "done": "Done"
+    },
+    "noItems": "No roadmap items yet."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "submit": "Submit Feedback",
+    "yourName": "Your Name",
+    "yourEmail": "Your Email (optional)",
+    "feedbackTitle": "Title",
+    "feedbackDescription": "Description",
+    "category": {
+      "feature": "Feature Request",
+      "bug": "Bug Report",
+      "improvement": "Improvement"
+    },
+    "status": {
+      "open": "Open",
+      "under_review": "Under Review",
+      "planned": "Planned",
+      "closed": "Closed"
+    },
+    "vote": "Vote",
+    "votes": "votes",
+    "noFeedback": "No feedback yet. Be the first!"
+  }
+}
