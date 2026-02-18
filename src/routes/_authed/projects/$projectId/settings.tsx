@@ -1,11 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { deleteProject } from '@/server/functions/projects'
@@ -20,7 +16,6 @@ function SettingsPage() {
   const { t } = useTranslation()
   const navigate = Route.useNavigate()
   const { projectId } = Route.useParams()
-  const parentData = Route.useRouteContext()
 
   return (
     <div className="max-w-xl space-y-6">
