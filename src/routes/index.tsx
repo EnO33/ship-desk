@@ -1,118 +1,87 @@
-import { createFileRoute } from '@tanstack/react-router'
-import {
-  Zap,
-  Server,
-  Route as RouteIcon,
-  Shield,
-  Waves,
-  Sparkles,
-} from 'lucide-react'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
+import { SignedIn, SignedOut, SignInButton } from '@clerk/tanstack-react-start'
+import { FileText, Map, MessageSquare, ArrowRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({ component: LandingPage })
 
-function App() {
-  const features = [
-    {
-      icon: <Zap className="w-12 h-12 text-cyan-400" />,
-      title: 'Powerful Server Functions',
-      description:
-        'Write server-side code that seamlessly integrates with your client components. Type-safe, secure, and simple.',
-    },
-    {
-      icon: <Server className="w-12 h-12 text-cyan-400" />,
-      title: 'Flexible Server Side Rendering',
-      description:
-        'Full-document SSR, streaming, and progressive enhancement out of the box. Control exactly what renders where.',
-    },
-    {
-      icon: <RouteIcon className="w-12 h-12 text-cyan-400" />,
-      title: 'API Routes',
-      description:
-        'Build type-safe API endpoints alongside your application. No separate backend needed.',
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-cyan-400" />,
-      title: 'Strongly Typed Everything',
-      description:
-        'End-to-end type safety from server to client. Catch errors before they reach production.',
-    },
-    {
-      icon: <Waves className="w-12 h-12 text-cyan-400" />,
-      title: 'Full Streaming Support',
-      description:
-        'Stream data from server to client progressively. Perfect for AI applications and real-time updates.',
-    },
-    {
-      icon: <Sparkles className="w-12 h-12 text-cyan-400" />,
-      title: 'Next Generation Ready',
-      description:
-        'Built from the ground up for modern web applications. Deploy anywhere JavaScript runs.',
-    },
-  ]
+const featureIcons = {
+  changelog: FileText,
+  roadmap: Map,
+  feedback: MessageSquare,
+} as const
+
+function LandingPage() {
+  const { t } = useTranslation()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      <section className="relative py-20 px-6 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
-        <div className="relative max-w-5xl mx-auto">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            <img
-              src="/tanstack-circle-logo.png"
-              alt="TanStack Logo"
-              className="w-24 h-24 md:w-32 md:h-32"
-            />
-            <h1 className="text-6xl md:text-7xl font-black text-white [letter-spacing:-0.08em]">
-              <span className="text-gray-300">TANSTACK</span>{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                START
-              </span>
-            </h1>
-          </div>
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
-            The framework for next generation AI applications
-          </p>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
-            Full-stack framework powered by TanStack Router for React and Solid.
-            Build modern applications with server functions, streaming, and type
-            safety.
-          </p>
-          <div className="flex flex-col items-center gap-4">
-            <a
-              href="https://tanstack.com/start"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-cyan-500/50"
-            >
-              Documentation
-            </a>
-            <p className="text-gray-400 text-sm mt-2">
-              Begin your TanStack Start journey by editing{' '}
-              <code className="px-2 py-1 bg-slate-700 rounded text-cyan-400">
-                /src/routes/index.tsx
-              </code>
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="flex min-h-screen flex-col">
+      <Header />
 
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="relative overflow-hidden border-b">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
+          <div className="container relative mx-auto px-4 py-24 text-center md:py-32">
+            <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
+              {t('landing.hero.title')}
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+              {t('landing.hero.subtitle')}
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-4">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button size="lg" className="gap-2">
+                    {t('landing.hero.cta')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <Link to="/dashboard">
+                  <Button size="lg" className="gap-2">
+                    {t('dashboard.title')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </SignedIn>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="container mx-auto px-4 py-20">
+          <div className="grid gap-8 md:grid-cols-3">
+            {(Object.keys(featureIcons) as Array<keyof typeof featureIcons>).map(
+              (key) => {
+                const Icon = featureIcons[key]
+                return (
+                  <div
+                    key={key}
+                    className="rounded-lg border bg-card p-6 transition-shadow hover:shadow-md"
+                  >
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+                      <Icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <h3 className="mb-2 text-xl font-semibold">
+                      {t(`landing.features.${key}.title`)}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {t(`landing.features.${key}.description`)}
+                    </p>
+                  </div>
+                )
+              },
+            )}
+          </div>
+        </section>
+      </main>
+
+      <Footer />
     </div>
   )
 }
