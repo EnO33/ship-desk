@@ -3,7 +3,7 @@ import { db } from '@/db'
 import { projects, users } from '@/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
-import { createProjectSchema, updateProjectSchema } from '@/lib/validators'
+import { createProjectSchema } from '@/lib/validators'
 import { authMiddleware } from '@/server/middleware/auth'
 
 type Project = typeof projects.$inferSelect
@@ -29,8 +29,8 @@ export const getProjects = createServerFn({ method: 'GET' })
   })
 
 export const getProject = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
   .validator((projectId: string) => projectId)
+  .middleware([authMiddleware])
   .handler(async ({ data: projectId, context }): Promise<Result<Project>> => {
     const [user] = await db
       .select()
@@ -53,8 +53,8 @@ export const getProject = createServerFn({ method: 'GET' })
   })
 
 export const createProject = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator(createProjectSchema)
+  .middleware([authMiddleware])
   .handler(async ({ data, context }): Promise<Result<Project>> => {
     const [user] = await db
       .select()
@@ -82,8 +82,8 @@ export const createProject = createServerFn({ method: 'POST' })
   })
 
 export const deleteProject = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator((projectId: number) => projectId)
+  .middleware([authMiddleware])
   .handler(async ({ data: projectId, context }): Promise<Result<boolean>> => {
     const [user] = await db
       .select()

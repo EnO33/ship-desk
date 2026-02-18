@@ -12,8 +12,8 @@ import { authMiddleware } from '@/server/middleware/auth'
 type RoadmapItem = typeof roadmapItems.$inferSelect
 
 export const getRoadmapItems = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
   .validator((projectId: number) => projectId)
+  .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<RoadmapItem[]>> => {
     const items = await db
       .select()
@@ -25,8 +25,8 @@ export const getRoadmapItems = createServerFn({ method: 'GET' })
   })
 
 export const createRoadmapItem = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator(createRoadmapItemSchema)
+  .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
     const [item] = await db.insert(roadmapItems).values(data).returning()
     if (!item) return err('Failed to create roadmap item')
@@ -34,8 +34,8 @@ export const createRoadmapItem = createServerFn({ method: 'POST' })
   })
 
 export const updateRoadmapItem = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator(updateRoadmapItemSchema)
+  .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
     const { id, ...updates } = data
     const [item] = await db
@@ -49,8 +49,8 @@ export const updateRoadmapItem = createServerFn({ method: 'POST' })
   })
 
 export const deleteRoadmapItem = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator((id: number) => id)
+  .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
       .delete(roadmapItems)

@@ -1,4 +1,4 @@
-import { createServerFileRoute } from '@tanstack/react-start/server'
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 import { db } from '@/db'
 import { users } from '@/db/schema'
 import { eq } from 'drizzle-orm'
@@ -14,7 +14,7 @@ type ClerkWebhookEvent = {
   }
 }
 
-export const ServerRoute = createServerFileRoute('/api/webhook/clerk').methods({
+export const APIRoute = createAPIFileRoute('/api/webhook/clerk')({
   POST: async ({ request }) => {
     const body = (await request.json()) as ClerkWebhookEvent
 

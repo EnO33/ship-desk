@@ -9,8 +9,8 @@ import { authMiddleware } from '@/server/middleware/auth'
 type Feedback = typeof feedbacks.$inferSelect
 
 export const getFeedbacks = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
   .validator((projectId: number) => projectId)
+  .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<Feedback[]>> => {
     const result = await db
       .select()
@@ -22,8 +22,8 @@ export const getFeedbacks = createServerFn({ method: 'GET' })
   })
 
 export const updateFeedbackStatus = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator((data: { id: number; status: string }) => data)
+  .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Feedback>> => {
     const [updated] = await db
       .update(feedbacks)
@@ -36,8 +36,8 @@ export const updateFeedbackStatus = createServerFn({ method: 'POST' })
   })
 
 export const deleteFeedback = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator((id: number) => id)
+  .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
       .delete(feedbacks)

@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
-import { changelogs, projects, users } from '@/db/schema'
+import { changelogs, projects } from '@/db/schema'
 import { eq, and, desc } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
 import { createChangelogSchema, updateChangelogSchema } from '@/lib/validators'
@@ -9,8 +9,8 @@ import { authMiddleware } from '@/server/middleware/auth'
 type Changelog = typeof changelogs.$inferSelect
 
 export const getChangelogs = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
   .validator((projectId: number) => projectId)
+  .middleware([authMiddleware])
   .handler(async ({ data: projectId }): Promise<Result<Changelog[]>> => {
     const result = await db
       .select()
@@ -22,8 +22,8 @@ export const getChangelogs = createServerFn({ method: 'GET' })
   })
 
 export const createChangelog = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator(createChangelogSchema)
+  .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Changelog>> => {
     const publishedAt =
       data.status === 'published' ? new Date() : undefined
@@ -38,8 +38,8 @@ export const createChangelog = createServerFn({ method: 'POST' })
   })
 
 export const updateChangelog = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator(updateChangelogSchema)
+  .middleware([authMiddleware])
   .handler(async ({ data }): Promise<Result<Changelog>> => {
     const { id, ...updates } = data
     const publishedAt =
@@ -56,8 +56,8 @@ export const updateChangelog = createServerFn({ method: 'POST' })
   })
 
 export const deleteChangelog = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
   .validator((id: number) => id)
+  .middleware([authMiddleware])
   .handler(async ({ data: id }): Promise<Result<boolean>> => {
     const deleted = await db
       .delete(changelogs)

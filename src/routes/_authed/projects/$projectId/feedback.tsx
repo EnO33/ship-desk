@@ -1,10 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
 import { Trash2, ArrowUpCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -17,7 +16,7 @@ import {
   updateFeedbackStatus,
   deleteFeedback,
 } from '@/server/functions/feedbacks'
-import { FEEDBACK_STATUSES, FEEDBACK_CATEGORIES } from '@/lib/constants'
+import { FEEDBACK_STATUSES } from '@/lib/constants'
 
 export const Route = createFileRoute(
   '/_authed/projects/$projectId/feedback',
