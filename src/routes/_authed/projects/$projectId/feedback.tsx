@@ -1,11 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
-import { Trash2, ArrowUpCircle } from 'lucide-react'
+import { Trash2, ArrowUpCircle, Search, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -14,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { Pagination } from '@/components/shared/pagination'
 import { RouteLoading } from '@/components/shared/route-loading'
 import { RouteError } from '@/components/shared/route-error'
 import {
@@ -21,13 +23,17 @@ import {
   updateFeedbackStatus,
   deleteFeedback,
 } from '@/server/functions/feedbacks'
-import { FEEDBACK_STATUSES } from '@/lib/constants'
+import { FEEDBACK_STATUSES, FEEDBACK_CATEGORIES } from '@/lib/constants'
 
 export const Route = createFileRoute(
   '/_authed/projects/$projectId/feedback',
 )({
-  loader: ({ params }) =>
-    getFeedbacks({ data: Number(params.projectId) }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    page: Number(search.page) || 1,
+  }),
+  loaderDeps: ({ search }) => ({ page: search.page }),
+  loader: ({ params, deps }) =>
+    getFeedbacks({ data: { projectId: Number(params.projectId), page: deps.page, limit: 20 } }),
   component: FeedbackPage,
   pendingComponent: RouteLoading,
   errorComponent: RouteError,
@@ -41,15 +47,35 @@ const categoryColors: Record<string, string> = {
 
 function FeedbackPage() {
   const result = Route.useLoaderData()
+  const { projectId } = Route.useParams()
   const { t } = useTranslation()
-  const navigate = Route.useNavigate()
+  const navigate = useNavigate()
   const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [search, setSearch] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState<Set<string>>(new Set())
+  const [statusFilter, setStatusFilter] = useState<Set<string>>(new Set())
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
   }
 
-  const items = result.data
+  const { feedbacks, total, page, limit } = result.data
+
+  const toggleFilter = (set: Set<string>, value: string): Set<string> => {
+    const next = new Set(set)
+    if (next.has(value)) next.delete(value)
+    else next.add(value)
+    return next
+  }
+
+  const filtered = feedbacks.filter((item) => {
+    if (search && !item.title.toLowerCase().includes(search.toLowerCase())) return false
+    if (categoryFilter.size > 0 && !categoryFilter.has(item.category)) return false
+    if (statusFilter.size > 0 && !statusFilter.has(item.status)) return false
+    return true
+  })
+
+  const hasFilters = search || categoryFilter.size > 0 || statusFilter.size > 0
 
   const handleDelete = async () => {
     if (deleteId === null) return
@@ -66,14 +92,72 @@ function FeedbackPage() {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">{t('feedback.title')}</h2>
 
-      {items.length === 0 && (
+      {/* Search & Filters */}
+      <div className="space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder={t('feedback.searchPlaceholder')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-muted-foreground">{t('common.filterBy')}:</span>
+          {FEEDBACK_CATEGORIES.map((c) => (
+            <Badge
+              key={c}
+              className={`cursor-pointer ${categoryFilter.has(c) ? categoryColors[c] : 'bg-muted text-muted-foreground'}`}
+              onClick={() => setCategoryFilter((prev) => toggleFilter(prev, c))}
+            >
+              {t(`feedback.category.${c}`)}
+            </Badge>
+          ))}
+          <span className="mx-1 text-muted-foreground">|</span>
+          {FEEDBACK_STATUSES.map((s) => (
+            <Badge
+              key={s}
+              variant="outline"
+              className={`cursor-pointer ${statusFilter.has(s) ? 'border-primary text-primary' : ''}`}
+              onClick={() => setStatusFilter((prev) => toggleFilter(prev, s))}
+            >
+              {t(`feedback.status.${s}`)}
+            </Badge>
+          ))}
+          {hasFilters && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 gap-1 px-2 text-xs"
+              onClick={() => {
+                setSearch('')
+                setCategoryFilter(new Set())
+                setStatusFilter(new Set())
+              }}
+            >
+              <X className="h-3 w-3" />
+              {t('common.clearFilters')}
+            </Button>
+          )}
+        </div>
+
+        {hasFilters && (
+          <p className="text-sm text-muted-foreground">
+            {filtered.length} {t('common.results')}
+          </p>
+        )}
+      </div>
+
+      {filtered.length === 0 && (
         <p className="py-12 text-center text-muted-foreground">
-          {t('feedback.noFeedback')}
+          {hasFilters ? t('common.noResults') : t('feedback.noFeedback')}
         </p>
       )}
 
       <div className="space-y-3">
-        {items.map((item) => (
+        {filtered.map((item) => (
           <Card key={item.id} className="group">
             <CardContent className="flex items-start gap-4 p-4">
               <div className="flex flex-col items-center gap-1 pt-1">
@@ -132,6 +216,19 @@ function FeedbackPage() {
           </Card>
         ))}
       </div>
+
+      <Pagination
+        page={page}
+        total={total}
+        limit={limit}
+        onPageChange={(p) =>
+          navigate({
+            to: '/projects/$projectId/feedback',
+            params: { projectId },
+            search: { page: p },
+          })
+        }
+      />
 
       <ConfirmDialog
         open={deleteId !== null}

@@ -6,6 +6,7 @@ import { ok, err, type Result } from '@/lib/result'
 import {
   createRoadmapItemSchema,
   updateRoadmapItemSchema,
+  reorderRoadmapItemsSchema,
 } from '@/lib/validators'
 import { userMiddleware } from '@/server/middleware/auth'
 import { assertProjectOwner } from '@/server/lib/assert-project-owner'
@@ -83,6 +84,34 @@ export const deleteRoadmapItem = createServerFn({ method: 'POST' })
     if (!ownership.ok) return ownership
 
     await db.delete(roadmapItems).where(eq(roadmapItems.id, id))
+    return ok(true)
+  })
+
+export const reorderRoadmapItems = createServerFn({ method: 'POST' })
+  .inputValidator(reorderRoadmapItemsSchema)
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<boolean>> => {
+    if (data.items.length === 0) return ok(true)
+
+    // Verify ownership via the first item
+    const [first] = await db
+      .select()
+      .from(roadmapItems)
+      .where(eq(roadmapItems.id, data.items[0].id))
+      .limit(1)
+
+    if (!first) return err('Roadmap item not found')
+
+    const ownership = await assertProjectOwner(context.user.id, first.projectId)
+    if (!ownership.ok) return ownership
+
+    for (const item of data.items) {
+      await db
+        .update(roadmapItems)
+        .set({ status: item.status, order: item.order })
+        .where(eq(roadmapItems.id, item.id))
+    }
+
     return ok(true)
   })
 

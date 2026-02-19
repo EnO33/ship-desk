@@ -1,12 +1,17 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
-
+import { Pagination } from '@/components/shared/pagination'
 import { getPublicChangelogs } from '@/server/functions/changelogs'
 import { APP_NAME } from '@/lib/constants'
 
 export const Route = createFileRoute('/p/$slug/')({
-  loader: ({ params }) => getPublicChangelogs({ data: params.slug }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    page: Number(search.page) || 1,
+  }),
+  loaderDeps: ({ search }) => ({ page: search.page }),
+  loader: ({ params, deps }) =>
+    getPublicChangelogs({ data: { slug: params.slug, page: deps.page, limit: 20 } }),
   head: ({ loaderData }) => {
     const name = loaderData?.ok ? loaderData.data.project.name : ''
     const desc = loaderData?.ok
@@ -30,6 +35,7 @@ function PublicChangelogPage() {
   const result = Route.useLoaderData()
   const { slug } = Route.useParams()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   if (!result.ok) {
     return (
@@ -39,7 +45,7 @@ function PublicChangelogPage() {
     )
   }
 
-  const { project, entries } = result.data
+  const { project, entries, total, page, limit } = result.data
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,6 +107,15 @@ function PublicChangelogPage() {
             </article>
           ))}
         </div>
+
+        <Pagination
+          page={page}
+          total={total}
+          limit={limit}
+          onPageChange={(p) =>
+            navigate({ to: '/p/$slug', params: { slug }, search: { page: p } })
+          }
+        />
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

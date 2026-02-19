@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { Plus, Trash2, Pencil } from 'lucide-react'
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { Pagination } from '@/components/shared/pagination'
 import { RouteLoading } from '@/components/shared/route-loading'
 import { RouteError } from '@/components/shared/route-error'
 import {
@@ -18,7 +19,12 @@ import {
 export const Route = createFileRoute(
   '/_authed/projects/$projectId/changelog/',
 )({
-  loader: ({ params }) => getChangelogs({ data: Number(params.projectId) }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    page: Number(search.page) || 1,
+  }),
+  loaderDeps: ({ search }) => ({ page: search.page }),
+  loader: ({ params, deps }) =>
+    getChangelogs({ data: { projectId: Number(params.projectId), page: deps.page, limit: 20 } }),
   component: ChangelogListPage,
   pendingComponent: RouteLoading,
   errorComponent: RouteError,
@@ -28,14 +34,14 @@ function ChangelogListPage() {
   const result = Route.useLoaderData()
   const { projectId } = Route.useParams()
   const { t } = useTranslation()
-  const navigate = Route.useNavigate()
+  const navigate = useNavigate()
   const [deleteId, setDeleteId] = useState<number | null>(null)
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
   }
 
-  const entries = result.data
+  const { entries, total, page, limit } = result.data
 
   const handleDelete = async () => {
     if (deleteId === null) return
@@ -130,6 +136,19 @@ function ChangelogListPage() {
           </Card>
         ))}
       </div>
+
+      <Pagination
+        page={page}
+        total={total}
+        limit={limit}
+        onPageChange={(p) =>
+          navigate({
+            to: '/projects/$projectId/changelog',
+            params: { projectId },
+            search: { page: p },
+          })
+        }
+      />
 
       <ConfirmDialog
         open={deleteId !== null}
