@@ -18,7 +18,14 @@
     "dangerZone": "Zone de danger",
     "deleteConfirmTitle": "Êtes-vous sûr ?",
     "deleteConfirmDescription": "Cette action est irréversible.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "page": "Page",
+    "of": "sur",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "results": "résultats",
+    "filterBy": "Filtrer par",
+    "clearFilters": "Effacer les filtres"
   },
   "landing": {
     "hero": {
@@ -110,6 +117,7 @@
     "vote": "Voter",
     "votes": "votes",
     "noFeedback": "Aucun feedback pour le moment. Soyez le premier !",
-    "deleteConfirm": "Cela supprimera définitivement ce feedback."
+    "deleteConfirm": "Cela supprimera définitivement ce feedback.",
+    "searchPlaceholder": "Rechercher un feedback..."
   }
 }

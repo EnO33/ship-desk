@@ -18,7 +18,14 @@
     "dangerZone": "Danger Zone",
     "deleteConfirmTitle": "Are you sure?",
     "deleteConfirmDescription": "This action cannot be undone.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "page": "Page",
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next",
+    "results": "results",
+    "filterBy": "Filter by",
+    "clearFilters": "Clear filters"
   },
   "landing": {
     "hero": {
@@ -110,6 +117,7 @@
     "vote": "Vote",
     "votes": "votes",
     "noFeedback": "No feedback yet. Be the first!",
-    "deleteConfirm": "This will permanently delete this feedback."
+    "deleteConfirm": "This will permanently delete this feedback.",
+    "searchPlaceholder": "Search feedback..."
   }
 }

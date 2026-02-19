@@ -18,7 +18,14 @@
     "dangerZone": "Gefahrenzone",
     "deleteConfirmTitle": "Bist du sicher?",
     "deleteConfirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "page": "Seite",
+    "of": "von",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "results": "Ergebnisse",
+    "filterBy": "Filtern nach",
+    "clearFilters": "Filter löschen"
   },
   "landing": {
     "hero": {
@@ -110,6 +117,7 @@
     "vote": "Abstimmen",
     "votes": "Stimmen",
     "noFeedback": "Noch kein Feedback. Sei der Erste!",
-    "deleteConfirm": "Dies wird dieses Feedback dauerhaft löschen."
+    "deleteConfirm": "Dies wird dieses Feedback dauerhaft löschen.",
+    "searchPlaceholder": "Feedback suchen..."
   }
 }
