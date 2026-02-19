@@ -5,8 +5,8 @@ import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { TiptapEditor } from '@/components/shared/tiptap-editor'
 import {
   Select,
   SelectContent,
@@ -100,13 +100,11 @@ function EditChangelogPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content">{t('changelog.content')}</Label>
-              <Textarea
-                id="content"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={10}
-                required
+              <Label>{t('changelog.content')}</Label>
+              <TiptapEditor
+                content={content}
+                onChange={setContent}
+                placeholder={t('changelog.content')}
               />
             </div>
             <div className="space-y-2">
