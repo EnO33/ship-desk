@@ -93,9 +93,10 @@ function PublicChangelogPage() {
                 </time>
               </div>
               <h3 className="text-xl font-semibold">{entry.title}</h3>
-              <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
-                {entry.content}
-              </p>
+              <div
+                className="prose prose-neutral dark:prose-invert mt-2 max-w-none text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: entry.content }}
+              />
               <hr className="mt-8" />
             </article>
           ))}
