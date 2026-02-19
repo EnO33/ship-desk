@@ -4,14 +4,18 @@ import { changelogs, projects } from '@/db/schema'
 import { eq, and, desc } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
 import { createChangelogSchema, updateChangelogSchema } from '@/lib/validators'
-import { authMiddleware } from '@/server/middleware/auth'
+import { userMiddleware } from '@/server/middleware/auth'
+import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type Changelog = typeof changelogs.$inferSelect
 
 export const getChangelogs = createServerFn({ method: 'GET' })
   .inputValidator((projectId: number) => projectId)
-  .middleware([authMiddleware])
-  .handler(async ({ data: projectId }): Promise<Result<Changelog[]>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data: projectId, context }): Promise<Result<Changelog[]>> => {
+    const ownership = await assertProjectOwner(context.user.id, projectId)
+    if (!ownership.ok) return ownership
+
     const result = await db
       .select()
       .from(changelogs)
@@ -21,10 +25,31 @@ export const getChangelogs = createServerFn({ method: 'GET' })
     return ok(result)
   })
 
+export const getChangelog = createServerFn({ method: 'GET' })
+  .inputValidator((id: number) => id)
+  .middleware([userMiddleware])
+  .handler(async ({ data: id, context }): Promise<Result<Changelog>> => {
+    const [entry] = await db
+      .select()
+      .from(changelogs)
+      .where(eq(changelogs.id, id))
+      .limit(1)
+
+    if (!entry) return err('Changelog entry not found')
+
+    const ownership = await assertProjectOwner(context.user.id, entry.projectId)
+    if (!ownership.ok) return ownership
+
+    return ok(entry)
+  })
+
 export const createChangelog = createServerFn({ method: 'POST' })
   .inputValidator(createChangelogSchema)
-  .middleware([authMiddleware])
-  .handler(async ({ data }): Promise<Result<Changelog>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<Changelog>> => {
+    const ownership = await assertProjectOwner(context.user.id, data.projectId)
+    if (!ownership.ok) return ownership
+
     const publishedAt =
       data.status === 'published' ? new Date() : undefined
 
@@ -39,9 +64,21 @@ export const createChangelog = createServerFn({ method: 'POST' })
 
 export const updateChangelog = createServerFn({ method: 'POST' })
   .inputValidator(updateChangelogSchema)
-  .middleware([authMiddleware])
-  .handler(async ({ data }): Promise<Result<Changelog>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<Changelog>> => {
     const { id, ...updates } = data
+
+    const [existing] = await db
+      .select()
+      .from(changelogs)
+      .where(eq(changelogs.id, id))
+      .limit(1)
+
+    if (!existing) return err('Changelog entry not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
     const publishedAt =
       updates.status === 'published' ? new Date() : undefined
 
@@ -57,14 +94,20 @@ export const updateChangelog = createServerFn({ method: 'POST' })
 
 export const deleteChangelog = createServerFn({ method: 'POST' })
   .inputValidator((id: number) => id)
-  .middleware([authMiddleware])
-  .handler(async ({ data: id }): Promise<Result<boolean>> => {
-    const deleted = await db
-      .delete(changelogs)
+  .middleware([userMiddleware])
+  .handler(async ({ data: id, context }): Promise<Result<boolean>> => {
+    const [existing] = await db
+      .select()
+      .from(changelogs)
       .where(eq(changelogs.id, id))
-      .returning()
+      .limit(1)
 
-    if (deleted.length === 0) return err('Changelog entry not found')
+    if (!existing) return err('Changelog entry not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
+    await db.delete(changelogs).where(eq(changelogs.id, id))
     return ok(true)
   })
 

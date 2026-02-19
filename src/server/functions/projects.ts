@@ -1,28 +1,21 @@
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
-import { projects, users } from '@/db/schema'
+import { projects } from '@/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
-import { createProjectSchema } from '@/lib/validators'
-import { authMiddleware } from '@/server/middleware/auth'
+import { createProjectSchema, updateProjectSchema } from '@/lib/validators'
+import { userMiddleware } from '@/server/middleware/auth'
+import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type Project = typeof projects.$inferSelect
 
 export const getProjects = createServerFn({ method: 'GET' })
-  .middleware([authMiddleware])
+  .middleware([userMiddleware])
   .handler(async ({ context }): Promise<Result<Project[]>> => {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, context.userId))
-      .limit(1)
-
-    if (!user) return err('User not found')
-
     const result = await db
       .select()
       .from(projects)
-      .where(eq(projects.userId, user.id))
+      .where(eq(projects.userId, context.user.id))
       .orderBy(projects.createdAt)
 
     return ok(result)
@@ -30,40 +23,15 @@ export const getProjects = createServerFn({ method: 'GET' })
 
 export const getProject = createServerFn({ method: 'GET' })
   .inputValidator((projectId: string) => projectId)
-  .middleware([authMiddleware])
+  .middleware([userMiddleware])
   .handler(async ({ data: projectId, context }): Promise<Result<Project>> => {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, context.userId))
-      .limit(1)
-
-    if (!user) return err('User not found')
-
-    const [project] = await db
-      .select()
-      .from(projects)
-      .where(
-        and(eq(projects.id, Number(projectId)), eq(projects.userId, user.id)),
-      )
-      .limit(1)
-
-    if (!project) return err('Project not found')
-    return ok(project)
+    return assertProjectOwner(context.user.id, Number(projectId))
   })
 
 export const createProject = createServerFn({ method: 'POST' })
   .inputValidator(createProjectSchema)
-  .middleware([authMiddleware])
+  .middleware([userMiddleware])
   .handler(async ({ data, context }): Promise<Result<Project>> => {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, context.userId))
-      .limit(1)
-
-    if (!user) return err('User not found')
-
     const [existing] = await db
       .select()
       .from(projects)
@@ -74,30 +42,49 @@ export const createProject = createServerFn({ method: 'POST' })
 
     const [project] = await db
       .insert(projects)
-      .values({ ...data, userId: user.id })
+      .values({ ...data, userId: context.user.id })
       .returning()
 
     if (!project) return err('Failed to create project')
     return ok(project)
   })
 
-export const deleteProject = createServerFn({ method: 'POST' })
-  .inputValidator((projectId: number) => projectId)
-  .middleware([authMiddleware])
-  .handler(async ({ data: projectId, context }): Promise<Result<boolean>> => {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, context.userId))
-      .limit(1)
+export const updateProject = createServerFn({ method: 'POST' })
+  .inputValidator(updateProjectSchema)
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<Project>> => {
+    const { id, ...updates } = data
 
-    if (!user) return err('User not found')
+    const ownership = await assertProjectOwner(context.user.id, id)
+    if (!ownership.ok) return ownership
 
-    const deleted = await db
-      .delete(projects)
-      .where(and(eq(projects.id, projectId), eq(projects.userId, user.id)))
+    if (updates.slug && updates.slug !== ownership.data.slug) {
+      const [existing] = await db
+        .select()
+        .from(projects)
+        .where(and(eq(projects.slug, updates.slug)))
+        .limit(1)
+
+      if (existing) return err('Slug already taken')
+    }
+
+    const [project] = await db
+      .update(projects)
+      .set(updates)
+      .where(eq(projects.id, id))
       .returning()
 
-    if (deleted.length === 0) return err('Project not found')
+    if (!project) return err('Failed to update project')
+    return ok(project)
+  })
+
+export const deleteProject = createServerFn({ method: 'POST' })
+  .inputValidator((projectId: number) => projectId)
+  .middleware([userMiddleware])
+  .handler(async ({ data: projectId, context }): Promise<Result<boolean>> => {
+    const ownership = await assertProjectOwner(context.user.id, projectId)
+    if (!ownership.ok) return ownership
+
+    await db.delete(projects).where(eq(projects.id, projectId))
     return ok(true)
   })

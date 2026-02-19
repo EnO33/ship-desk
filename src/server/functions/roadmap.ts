@@ -7,14 +7,18 @@ import {
   createRoadmapItemSchema,
   updateRoadmapItemSchema,
 } from '@/lib/validators'
-import { authMiddleware } from '@/server/middleware/auth'
+import { userMiddleware } from '@/server/middleware/auth'
+import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type RoadmapItem = typeof roadmapItems.$inferSelect
 
 export const getRoadmapItems = createServerFn({ method: 'GET' })
   .inputValidator((projectId: number) => projectId)
-  .middleware([authMiddleware])
-  .handler(async ({ data: projectId }): Promise<Result<RoadmapItem[]>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data: projectId, context }): Promise<Result<RoadmapItem[]>> => {
+    const ownership = await assertProjectOwner(context.user.id, projectId)
+    if (!ownership.ok) return ownership
+
     const items = await db
       .select()
       .from(roadmapItems)
@@ -26,8 +30,11 @@ export const getRoadmapItems = createServerFn({ method: 'GET' })
 
 export const createRoadmapItem = createServerFn({ method: 'POST' })
   .inputValidator(createRoadmapItemSchema)
-  .middleware([authMiddleware])
-  .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<RoadmapItem>> => {
+    const ownership = await assertProjectOwner(context.user.id, data.projectId)
+    if (!ownership.ok) return ownership
+
     const [item] = await db.insert(roadmapItems).values(data).returning()
     if (!item) return err('Failed to create roadmap item')
     return ok(item)
@@ -35,9 +42,21 @@ export const createRoadmapItem = createServerFn({ method: 'POST' })
 
 export const updateRoadmapItem = createServerFn({ method: 'POST' })
   .inputValidator(updateRoadmapItemSchema)
-  .middleware([authMiddleware])
-  .handler(async ({ data }): Promise<Result<RoadmapItem>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<RoadmapItem>> => {
     const { id, ...updates } = data
+
+    const [existing] = await db
+      .select()
+      .from(roadmapItems)
+      .where(eq(roadmapItems.id, id))
+      .limit(1)
+
+    if (!existing) return err('Roadmap item not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
     const [item] = await db
       .update(roadmapItems)
       .set(updates)
@@ -50,14 +69,20 @@ export const updateRoadmapItem = createServerFn({ method: 'POST' })
 
 export const deleteRoadmapItem = createServerFn({ method: 'POST' })
   .inputValidator((id: number) => id)
-  .middleware([authMiddleware])
-  .handler(async ({ data: id }): Promise<Result<boolean>> => {
-    const deleted = await db
-      .delete(roadmapItems)
+  .middleware([userMiddleware])
+  .handler(async ({ data: id, context }): Promise<Result<boolean>> => {
+    const [existing] = await db
+      .select()
+      .from(roadmapItems)
       .where(eq(roadmapItems.id, id))
-      .returning()
+      .limit(1)
 
-    if (deleted.length === 0) return err('Roadmap item not found')
+    if (!existing) return err('Roadmap item not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
+    await db.delete(roadmapItems).where(eq(roadmapItems.id, id))
     return ok(true)
   })
 

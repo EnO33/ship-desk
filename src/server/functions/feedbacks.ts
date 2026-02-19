@@ -4,14 +4,18 @@ import { feedbacks, feedbackVotes, projects } from '@/db/schema'
 import { eq, and, desc, sql } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
 import { createFeedbackSchema, voteFeedbackSchema } from '@/lib/validators'
-import { authMiddleware } from '@/server/middleware/auth'
+import { userMiddleware } from '@/server/middleware/auth'
+import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type Feedback = typeof feedbacks.$inferSelect
 
 export const getFeedbacks = createServerFn({ method: 'GET' })
   .inputValidator((projectId: number) => projectId)
-  .middleware([authMiddleware])
-  .handler(async ({ data: projectId }): Promise<Result<Feedback[]>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data: projectId, context }): Promise<Result<Feedback[]>> => {
+    const ownership = await assertProjectOwner(context.user.id, projectId)
+    if (!ownership.ok) return ownership
+
     const result = await db
       .select()
       .from(feedbacks)
@@ -23,8 +27,19 @@ export const getFeedbacks = createServerFn({ method: 'GET' })
 
 export const updateFeedbackStatus = createServerFn({ method: 'POST' })
   .inputValidator((data: { id: number; status: string }) => data)
-  .middleware([authMiddleware])
-  .handler(async ({ data }): Promise<Result<Feedback>> => {
+  .middleware([userMiddleware])
+  .handler(async ({ data, context }): Promise<Result<Feedback>> => {
+    const [existing] = await db
+      .select()
+      .from(feedbacks)
+      .where(eq(feedbacks.id, data.id))
+      .limit(1)
+
+    if (!existing) return err('Feedback not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
     const [updated] = await db
       .update(feedbacks)
       .set({ status: data.status as Feedback['status'] })
@@ -37,14 +52,20 @@ export const updateFeedbackStatus = createServerFn({ method: 'POST' })
 
 export const deleteFeedback = createServerFn({ method: 'POST' })
   .inputValidator((id: number) => id)
-  .middleware([authMiddleware])
-  .handler(async ({ data: id }): Promise<Result<boolean>> => {
-    const deleted = await db
-      .delete(feedbacks)
+  .middleware([userMiddleware])
+  .handler(async ({ data: id, context }): Promise<Result<boolean>> => {
+    const [existing] = await db
+      .select()
+      .from(feedbacks)
       .where(eq(feedbacks.id, id))
-      .returning()
+      .limit(1)
 
-    if (deleted.length === 0) return err('Feedback not found')
+    if (!existing) return err('Feedback not found')
+
+    const ownership = await assertProjectOwner(context.user.id, existing.projectId)
+    if (!ownership.ok) return ownership
+
+    await db.delete(feedbacks).where(eq(feedbacks.id, id))
     return ok(true)
   })
 
