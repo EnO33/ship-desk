@@ -22,6 +22,7 @@ import { Route as AuthedProjectsProjectIdRoadmapRouteImport } from './routes/_au
 import { Route as AuthedProjectsProjectIdFeedbackRouteImport } from './routes/_authed/projects/$projectId/feedback'
 import { Route as AuthedProjectsProjectIdChangelogIndexRouteImport } from './routes/_authed/projects/$projectId/changelog/index'
 import { Route as AuthedProjectsProjectIdChangelogNewRouteImport } from './routes/_authed/projects/$projectId/changelog/new'
+import { Route as AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport } from './routes/_authed/projects/$projectId/changelog/$changelogId/edit'
 
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
@@ -93,6 +94,12 @@ const AuthedProjectsProjectIdChangelogNewRoute =
     path: '/changelog/new',
     getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
   } as any)
+const AuthedProjectsProjectIdChangelogChangelogIdEditRoute =
+  AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport.update({
+    id: '/changelog/$changelogId/edit',
+    path: '/changelog/$changelogId/edit',
+    getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
   '/projects/$projectId/changelog/new': typeof AuthedProjectsProjectIdChangelogNewRoute
   '/projects/$projectId/changelog/': typeof AuthedProjectsProjectIdChangelogIndexRoute
+  '/projects/$projectId/changelog/$changelogId/edit': typeof AuthedProjectsProjectIdChangelogChangelogIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,6 +129,7 @@ export interface FileRoutesByTo {
   '/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
   '/projects/$projectId/changelog/new': typeof AuthedProjectsProjectIdChangelogNewRoute
   '/projects/$projectId/changelog': typeof AuthedProjectsProjectIdChangelogIndexRoute
+  '/projects/$projectId/changelog/$changelogId/edit': typeof AuthedProjectsProjectIdChangelogChangelogIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -137,6 +146,7 @@ export interface FileRoutesById {
   '/_authed/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
   '/_authed/projects/$projectId/changelog/new': typeof AuthedProjectsProjectIdChangelogNewRoute
   '/_authed/projects/$projectId/changelog/': typeof AuthedProjectsProjectIdChangelogIndexRoute
+  '/_authed/projects/$projectId/changelog/$changelogId/edit': typeof AuthedProjectsProjectIdChangelogChangelogIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/projects/$projectId/settings'
     | '/projects/$projectId/changelog/new'
     | '/projects/$projectId/changelog/'
+    | '/projects/$projectId/changelog/$changelogId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/projects/$projectId/settings'
     | '/projects/$projectId/changelog/new'
     | '/projects/$projectId/changelog'
+    | '/projects/$projectId/changelog/$changelogId/edit'
   id:
     | '__root__'
     | '/'
@@ -182,6 +194,7 @@ export interface FileRouteTypes {
     | '/_authed/projects/$projectId/settings'
     | '/_authed/projects/$projectId/changelog/new'
     | '/_authed/projects/$projectId/changelog/'
+    | '/_authed/projects/$projectId/changelog/$changelogId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -285,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProjectsProjectIdChangelogNewRouteImport
       parentRoute: typeof AuthedProjectsProjectIdRouteRoute
     }
+    '/_authed/projects/$projectId/changelog/$changelogId/edit': {
+      id: '/_authed/projects/$projectId/changelog/$changelogId/edit'
+      path: '/changelog/$changelogId/edit'
+      fullPath: '/projects/$projectId/changelog/$changelogId/edit'
+      preLoaderRoute: typeof AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport
+      parentRoute: typeof AuthedProjectsProjectIdRouteRoute
+    }
   }
 }
 
@@ -294,6 +314,7 @@ interface AuthedProjectsProjectIdRouteRouteChildren {
   AuthedProjectsProjectIdSettingsRoute: typeof AuthedProjectsProjectIdSettingsRoute
   AuthedProjectsProjectIdChangelogNewRoute: typeof AuthedProjectsProjectIdChangelogNewRoute
   AuthedProjectsProjectIdChangelogIndexRoute: typeof AuthedProjectsProjectIdChangelogIndexRoute
+  AuthedProjectsProjectIdChangelogChangelogIdEditRoute: typeof AuthedProjectsProjectIdChangelogChangelogIdEditRoute
 }
 
 const AuthedProjectsProjectIdRouteRouteChildren: AuthedProjectsProjectIdRouteRouteChildren =
@@ -305,6 +326,8 @@ const AuthedProjectsProjectIdRouteRouteChildren: AuthedProjectsProjectIdRouteRou
       AuthedProjectsProjectIdChangelogNewRoute,
     AuthedProjectsProjectIdChangelogIndexRoute:
       AuthedProjectsProjectIdChangelogIndexRoute,
+    AuthedProjectsProjectIdChangelogChangelogIdEditRoute:
+      AuthedProjectsProjectIdChangelogChangelogIdEditRoute,
   }
 
 const AuthedProjectsProjectIdRouteRouteWithChildren =
