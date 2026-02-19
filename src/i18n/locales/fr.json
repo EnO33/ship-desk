@@ -13,7 +13,12 @@
     "error": "Une erreur est survenue",
     "signIn": "Se connecter",
     "signUp": "S'inscrire",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "confirm": "Confirmer",
+    "dangerZone": "Zone de danger",
+    "deleteConfirmTitle": "Êtes-vous sûr ?",
+    "deleteConfirmDescription": "Cette action est irréversible.",
+    "retry": "Réessayer"
   },
   "landing": {
     "hero": {
@@ -47,16 +52,22 @@
     "slug": "Slug",
     "description": "Description",
     "create": "Créer le projet",
+    "update": "Mettre à jour le projet",
+    "updated": "Projet mis à jour",
     "settings": "Paramètres",
     "changelog": "Changelog",
     "roadmap": "Roadmap",
     "feedback": "Feedback",
     "public": "Public",
-    "private": "Privé"
+    "private": "Privé",
+    "visibility": "Visibilité",
+    "deleteConfirm": "Cela supprimera définitivement ce projet et toutes ses données."
   },
   "changelog": {
     "title": "Changelog",
     "new": "Nouvelle entrée",
+    "edit": "Modifier l'entrée",
+    "updated": "Entrée mise à jour",
     "version": "Version",
     "content": "Contenu",
     "status": {
@@ -64,7 +75,8 @@
       "published": "Publié"
     },
     "publish": "Publier",
-    "noEntries": "Aucune entrée de changelog."
+    "noEntries": "Aucune entrée de changelog.",
+    "deleteConfirm": "Cela supprimera définitivement cette entrée de changelog."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -74,7 +86,8 @@
       "in_progress": "En cours",
       "done": "Terminé"
     },
-    "noItems": "Aucun élément dans la roadmap."
+    "noItems": "Aucun élément dans la roadmap.",
+    "deleteConfirm": "Cela supprimera définitivement cet élément de la roadmap."
   },
   "feedback": {
     "title": "Feedback",
@@ -96,6 +109,7 @@
     },
     "vote": "Voter",
     "votes": "votes",
-    "noFeedback": "Aucun feedback pour le moment. Soyez le premier !"
+    "noFeedback": "Aucun feedback pour le moment. Soyez le premier !",
+    "deleteConfirm": "Cela supprimera définitivement ce feedback."
   }
 }

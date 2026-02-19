@@ -13,7 +13,12 @@
     "error": "Something went wrong",
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "confirm": "Confirm",
+    "dangerZone": "Danger Zone",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmDescription": "This action cannot be undone.",
+    "retry": "Retry"
   },
   "landing": {
     "hero": {
@@ -47,16 +52,22 @@
     "slug": "Slug",
     "description": "Description",
     "create": "Create Project",
+    "update": "Update Project",
+    "updated": "Project updated",
     "settings": "Settings",
     "changelog": "Changelog",
     "roadmap": "Roadmap",
     "feedback": "Feedback",
     "public": "Public",
-    "private": "Private"
+    "private": "Private",
+    "visibility": "Visibility",
+    "deleteConfirm": "This will permanently delete this project and all its data."
   },
   "changelog": {
     "title": "Changelog",
     "new": "New Entry",
+    "edit": "Edit Entry",
+    "updated": "Entry updated",
     "version": "Version",
     "content": "Content",
     "status": {
@@ -64,7 +75,8 @@
       "published": "Published"
     },
     "publish": "Publish",
-    "noEntries": "No changelog entries yet."
+    "noEntries": "No changelog entries yet.",
+    "deleteConfirm": "This will permanently delete this changelog entry."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -74,7 +86,8 @@
       "in_progress": "In Progress",
       "done": "Done"
     },
-    "noItems": "No roadmap items yet."
+    "noItems": "No roadmap items yet.",
+    "deleteConfirm": "This will permanently delete this roadmap item."
   },
   "feedback": {
     "title": "Feedback",
@@ -96,6 +109,7 @@
     },
     "vote": "Vote",
     "votes": "votes",
-    "noFeedback": "No feedback yet. Be the first!"
+    "noFeedback": "No feedback yet. Be the first!",
+    "deleteConfirm": "This will permanently delete this feedback."
   }
 }

@@ -13,7 +13,12 @@
     "error": "Algo salió mal",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "confirm": "Confirmar",
+    "dangerZone": "Zona de peligro",
+    "deleteConfirmTitle": "¿Estás seguro?",
+    "deleteConfirmDescription": "Esta acción no se puede deshacer.",
+    "retry": "Reintentar"
   },
   "landing": {
     "hero": {
@@ -47,16 +52,22 @@
     "slug": "Slug",
     "description": "Descripción",
     "create": "Crear proyecto",
+    "update": "Actualizar proyecto",
+    "updated": "Proyecto actualizado",
     "settings": "Configuración",
     "changelog": "Changelog",
     "roadmap": "Roadmap",
     "feedback": "Feedback",
     "public": "Público",
-    "private": "Privado"
+    "private": "Privado",
+    "visibility": "Visibilidad",
+    "deleteConfirm": "Esto eliminará permanentemente este proyecto y todos sus datos."
   },
   "changelog": {
     "title": "Changelog",
     "new": "Nueva entrada",
+    "edit": "Editar entrada",
+    "updated": "Entrada actualizada",
     "version": "Versión",
     "content": "Contenido",
     "status": {
@@ -64,7 +75,8 @@
       "published": "Publicado"
     },
     "publish": "Publicar",
-    "noEntries": "No hay entradas de changelog."
+    "noEntries": "No hay entradas de changelog.",
+    "deleteConfirm": "Esto eliminará permanentemente esta entrada de changelog."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -74,7 +86,8 @@
       "in_progress": "En progreso",
       "done": "Terminado"
     },
-    "noItems": "No hay elementos en la roadmap."
+    "noItems": "No hay elementos en la roadmap.",
+    "deleteConfirm": "Esto eliminará permanentemente este elemento de la roadmap."
   },
   "feedback": {
     "title": "Feedback",
@@ -96,6 +109,7 @@
     },
     "vote": "Votar",
     "votes": "votos",
-    "noFeedback": "No hay feedback aún. ¡Sé el primero!"
+    "noFeedback": "No hay feedback aún. ¡Sé el primero!",
+    "deleteConfirm": "Esto eliminará permanentemente este feedback."
   }
 }

@@ -13,7 +13,12 @@
     "error": "Etwas ist schiefgelaufen",
     "signIn": "Anmelden",
     "signUp": "Registrieren",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "confirm": "Bestätigen",
+    "dangerZone": "Gefahrenzone",
+    "deleteConfirmTitle": "Bist du sicher?",
+    "deleteConfirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "retry": "Erneut versuchen"
   },
   "landing": {
     "hero": {
@@ -47,16 +52,22 @@
     "slug": "Slug",
     "description": "Beschreibung",
     "create": "Projekt erstellen",
+    "update": "Projekt aktualisieren",
+    "updated": "Projekt aktualisiert",
     "settings": "Einstellungen",
     "changelog": "Changelog",
     "roadmap": "Roadmap",
     "feedback": "Feedback",
     "public": "Öffentlich",
-    "private": "Privat"
+    "private": "Privat",
+    "visibility": "Sichtbarkeit",
+    "deleteConfirm": "Dies wird dieses Projekt und alle seine Daten dauerhaft löschen."
   },
   "changelog": {
     "title": "Changelog",
     "new": "Neuer Eintrag",
+    "edit": "Eintrag bearbeiten",
+    "updated": "Eintrag aktualisiert",
     "version": "Version",
     "content": "Inhalt",
     "status": {
@@ -64,7 +75,8 @@
       "published": "Veröffentlicht"
     },
     "publish": "Veröffentlichen",
-    "noEntries": "Noch keine Changelog-Einträge."
+    "noEntries": "Noch keine Changelog-Einträge.",
+    "deleteConfirm": "Dies wird diesen Changelog-Eintrag dauerhaft löschen."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -74,7 +86,8 @@
       "in_progress": "In Arbeit",
       "done": "Erledigt"
     },
-    "noItems": "Noch keine Roadmap-Elemente."
+    "noItems": "Noch keine Roadmap-Elemente.",
+    "deleteConfirm": "Dies wird dieses Roadmap-Element dauerhaft löschen."
   },
   "feedback": {
     "title": "Feedback",
@@ -96,6 +109,7 @@
     },
     "vote": "Abstimmen",
     "votes": "Stimmen",
-    "noFeedback": "Noch kein Feedback. Sei der Erste!"
+    "noFeedback": "Noch kein Feedback. Sei der Erste!",
+    "deleteConfirm": "Dies wird dieses Feedback dauerhaft löschen."
   }
 }
