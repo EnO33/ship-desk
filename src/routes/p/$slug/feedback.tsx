@@ -155,6 +155,7 @@ function PublicFeedbackPage() {
             <Link
               to="/p/$slug"
               params={{ slug }}
+              search={{ page: 1 }}
               className="text-muted-foreground hover:text-foreground"
             >
               {t('project.changelog')}
@@ -169,6 +170,7 @@ function PublicFeedbackPage() {
             <Link
               to="/p/$slug/feedback"
               params={{ slug }}
+              search={{ page: 1 }}
               className="font-medium text-primary"
             >
               {t('project.feedback')}

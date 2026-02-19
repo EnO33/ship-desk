@@ -52,6 +52,7 @@ function NewProjectPage() {
     navigate({
       to: '/projects/$projectId/changelog',
       params: { projectId: String(result.data.id) },
+      search: { page: 1 },
     })
   }
 

@@ -56,6 +56,7 @@ function PublicRoadmapPage() {
             <Link
               to="/p/$slug"
               params={{ slug }}
+              search={{ page: 1 }}
               className="text-muted-foreground hover:text-foreground"
             >
               {t('project.changelog')}
@@ -70,6 +71,7 @@ function PublicRoadmapPage() {
             <Link
               to="/p/$slug/feedback"
               params={{ slug }}
+              search={{ page: 1 }}
               className="text-muted-foreground hover:text-foreground"
             >
               {t('project.feedback')}

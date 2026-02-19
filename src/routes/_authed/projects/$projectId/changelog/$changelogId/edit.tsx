@@ -70,6 +70,7 @@ function EditChangelogPage() {
     navigate({
       to: '/projects/$projectId/changelog',
       params: { projectId },
+      search: { page: 1 },
     })
   }
 
@@ -140,6 +141,7 @@ function EditChangelogPage() {
                   navigate({
                     to: '/projects/$projectId/changelog',
                     params: { projectId },
+                    search: { page: 1 },
                   })
                 }
               >

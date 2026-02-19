@@ -54,6 +54,7 @@ function DashboardPage() {
               key={project.id}
               to="/projects/$projectId/changelog"
               params={{ projectId: String(project.id) }}
+              search={{ page: 1 }}
             >
               <Card className="transition-shadow hover:shadow-md">
                 <CardHeader>
