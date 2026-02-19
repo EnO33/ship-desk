@@ -3,11 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Folder } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { RouteLoading } from '@/components/shared/route-loading'
+import { RouteError } from '@/components/shared/route-error'
 import { getProjects } from '@/server/functions/projects'
 
 export const Route = createFileRoute('/_authed/dashboard')({
   loader: () => getProjects(),
   component: DashboardPage,
+  pendingComponent: RouteLoading,
+  errorComponent: RouteError,
 })
 
 function DashboardPage() {

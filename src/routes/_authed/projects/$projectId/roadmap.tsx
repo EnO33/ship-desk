@@ -22,6 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { RouteLoading } from '@/components/shared/route-loading'
+import { RouteError } from '@/components/shared/route-error'
 import {
   getRoadmapItems,
   createRoadmapItem,
@@ -36,6 +39,8 @@ export const Route = createFileRoute(
   loader: ({ params }) =>
     getRoadmapItems({ data: Number(params.projectId) }),
   component: RoadmapPage,
+  pendingComponent: RouteLoading,
+  errorComponent: RouteError,
 })
 
 const statusColors: Record<RoadmapStatus, string> = {
@@ -52,6 +57,7 @@ function RoadmapPage() {
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
@@ -75,6 +81,17 @@ function RoadmapPage() {
     setTitle('')
     setDescription('')
     navigate({ to: '.', reloadDocument: true })
+  }
+
+  const handleDelete = async () => {
+    if (deleteId === null) return
+    const res = await deleteRoadmapItem({ data: deleteId })
+    setDeleteId(null)
+    if (res.ok) {
+      navigate({ to: '.', reloadDocument: true })
+    } else {
+      toast.error(res.error)
+    }
   }
 
   return (
@@ -172,10 +189,7 @@ function RoadmapPage() {
                           size="icon"
                           variant="ghost"
                           className="h-7 w-7"
-                          onClick={async () => {
-                            await deleteRoadmapItem({ data: item.id })
-                            navigate({ to: '.', reloadDocument: true })
-                          }}
+                          onClick={() => setDeleteId(item.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5 text-destructive" />
                         </Button>
@@ -188,6 +202,13 @@ function RoadmapPage() {
           )
         })}
       </div>
+
+      <ConfirmDialog
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        description={t('roadmap.deleteConfirm')}
+        onConfirm={handleDelete}
+      />
     </div>
   )
 }

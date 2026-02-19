@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 import { Trash2, ArrowUpCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -11,6 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { RouteLoading } from '@/components/shared/route-loading'
+import { RouteError } from '@/components/shared/route-error'
 import {
   getFeedbacks,
   updateFeedbackStatus,
@@ -24,6 +29,8 @@ export const Route = createFileRoute(
   loader: ({ params }) =>
     getFeedbacks({ data: Number(params.projectId) }),
   component: FeedbackPage,
+  pendingComponent: RouteLoading,
+  errorComponent: RouteError,
 })
 
 const categoryColors: Record<string, string> = {
@@ -36,12 +43,24 @@ function FeedbackPage() {
   const result = Route.useLoaderData()
   const { t } = useTranslation()
   const navigate = Route.useNavigate()
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
   }
 
   const items = result.data
+
+  const handleDelete = async () => {
+    if (deleteId === null) return
+    const res = await deleteFeedback({ data: deleteId })
+    setDeleteId(null)
+    if (res.ok) {
+      navigate({ to: '.', reloadDocument: true })
+    } else {
+      toast.error(res.error)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -104,10 +123,7 @@ function FeedbackPage() {
                   size="icon"
                   variant="ghost"
                   className="h-7 w-7"
-                  onClick={async () => {
-                    await deleteFeedback({ data: item.id })
-                    navigate({ to: '.', reloadDocument: true })
-                  }}
+                  onClick={() => setDeleteId(item.id)}
                 >
                   <Trash2 className="h-3.5 w-3.5 text-destructive" />
                 </Button>
@@ -116,6 +132,13 @@ function FeedbackPage() {
           </Card>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        description={t('feedback.deleteConfirm')}
+        onConfirm={handleDelete}
+      />
     </div>
   )
 }

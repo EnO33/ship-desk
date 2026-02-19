@@ -1,10 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Plus, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import { Plus, Trash2, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ConfirmDialog } from '@/components/shared/confirm-dialog'
+import { RouteLoading } from '@/components/shared/route-loading'
+import { RouteError } from '@/components/shared/route-error'
 import {
   getChangelogs,
   deleteChangelog,
@@ -16,6 +20,8 @@ export const Route = createFileRoute(
 )({
   loader: ({ params }) => getChangelogs({ data: Number(params.projectId) }),
   component: ChangelogListPage,
+  pendingComponent: RouteLoading,
+  errorComponent: RouteError,
 })
 
 function ChangelogListPage() {
@@ -23,12 +29,25 @@ function ChangelogListPage() {
   const { projectId } = Route.useParams()
   const { t } = useTranslation()
   const navigate = Route.useNavigate()
+  const [deleteId, setDeleteId] = useState<number | null>(null)
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
   }
 
   const entries = result.data
+
+  const handleDelete = async () => {
+    if (deleteId === null) return
+    const res = await deleteChangelog({ data: deleteId })
+    setDeleteId(null)
+    if (res.ok) {
+      toast.success(t('common.delete'))
+      navigate({ to: '.', reloadDocument: true })
+    } else {
+      toast.error(res.error)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -86,16 +105,18 @@ function ChangelogListPage() {
                     {t('changelog.publish')}
                   </Button>
                 )}
+                <Link
+                  to="/projects/$projectId/changelog/$changelogId/edit"
+                  params={{ projectId, changelogId: String(entry.id) }}
+                >
+                  <Button size="sm" variant="ghost">
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                </Link>
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={async () => {
-                    const res = await deleteChangelog({ data: entry.id })
-                    if (res.ok) {
-                      toast.success('Deleted')
-                      navigate({ to: '.', reloadDocument: true })
-                    }
-                  }}
+                  onClick={() => setDeleteId(entry.id)}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
@@ -109,6 +130,13 @@ function ChangelogListPage() {
           </Card>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        description={t('changelog.deleteConfirm')}
+        onConfirm={handleDelete}
+      />
     </div>
   )
 }

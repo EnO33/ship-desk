@@ -1,10 +1,14 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { getProject } from '@/server/functions/projects'
 import { ProjectSidebar } from '@/components/layout/sidebar'
+import { RouteLoading } from '@/components/shared/route-loading'
+import { RouteError } from '@/components/shared/route-error'
 
 export const Route = createFileRoute('/_authed/projects/$projectId')({
   loader: ({ params }) => getProject({ data: params.projectId }),
   component: ProjectLayout,
+  pendingComponent: RouteLoading,
+  errorComponent: RouteError,
 })
 
 function ProjectLayout() {
