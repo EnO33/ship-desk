@@ -1,28 +1,39 @@
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
 import { changelogs, projects } from '@/db/schema'
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and, desc, sql } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
-import { createChangelogSchema, updateChangelogSchema } from '@/lib/validators'
+import { createChangelogSchema, updateChangelogSchema, paginatedSlugSchema, paginatedProjectSchema } from '@/lib/validators'
 import { userMiddleware } from '@/server/middleware/auth'
 import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type Changelog = typeof changelogs.$inferSelect
 
 export const getChangelogs = createServerFn({ method: 'GET' })
-  .inputValidator((projectId: number) => projectId)
+  .inputValidator(paginatedProjectSchema)
   .middleware([userMiddleware])
-  .handler(async ({ data: projectId, context }): Promise<Result<Changelog[]>> => {
-    const ownership = await assertProjectOwner(context.user.id, projectId)
+  .handler(async ({ data, context }): Promise<Result<{ entries: Changelog[]; total: number; page: number; limit: number }>> => {
+    const ownership = await assertProjectOwner(context.user.id, data.projectId)
     if (!ownership.ok) return ownership
 
-    const result = await db
+    const page = data.page ?? 1
+    const limit = data.limit ?? 20
+    const offset = (page - 1) * limit
+
+    const [countResult] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(changelogs)
+      .where(eq(changelogs.projectId, data.projectId))
+
+    const entries = await db
       .select()
       .from(changelogs)
-      .where(eq(changelogs.projectId, projectId))
+      .where(eq(changelogs.projectId, data.projectId))
       .orderBy(desc(changelogs.createdAt))
+      .limit(limit)
+      .offset(offset)
 
-    return ok(result)
+    return ok({ entries, total: countResult.count, page, limit })
   })
 
 export const getChangelog = createServerFn({ method: 'GET' })
@@ -112,26 +123,37 @@ export const deleteChangelog = createServerFn({ method: 'POST' })
   })
 
 export const getPublicChangelogs = createServerFn({ method: 'GET' })
-  .inputValidator((slug: string) => slug)
-  .handler(async ({ data: slug }): Promise<Result<{ project: typeof projects.$inferSelect; entries: Changelog[] }>> => {
+  .inputValidator(paginatedSlugSchema)
+  .handler(async ({ data }): Promise<Result<{ project: typeof projects.$inferSelect; entries: Changelog[]; total: number; page: number; limit: number }>> => {
     const [project] = await db
       .select()
       .from(projects)
-      .where(and(eq(projects.slug, slug), eq(projects.isPublic, true)))
+      .where(and(eq(projects.slug, data.slug), eq(projects.isPublic, true)))
       .limit(1)
 
     if (!project) return err('Project not found')
 
+    const page = data.page ?? 1
+    const limit = data.limit ?? 20
+    const offset = (page - 1) * limit
+
+    const whereClause = and(
+      eq(changelogs.projectId, project.id),
+      eq(changelogs.status, 'published'),
+    )
+
+    const [countResult] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(changelogs)
+      .where(whereClause)
+
     const entries = await db
       .select()
       .from(changelogs)
-      .where(
-        and(
-          eq(changelogs.projectId, project.id),
-          eq(changelogs.status, 'published'),
-        ),
-      )
+      .where(whereClause)
       .orderBy(desc(changelogs.publishedAt))
+      .limit(limit)
+      .offset(offset)
 
-    return ok({ project, entries })
+    return ok({ project, entries, total: countResult.count, page, limit })
   })

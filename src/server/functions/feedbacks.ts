@@ -3,26 +3,37 @@ import { db } from '@/db'
 import { feedbacks, feedbackVotes, projects } from '@/db/schema'
 import { eq, and, desc, sql } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
-import { createFeedbackSchema, voteFeedbackSchema } from '@/lib/validators'
+import { createFeedbackSchema, voteFeedbackSchema, paginatedSlugSchema, paginatedProjectSchema } from '@/lib/validators'
 import { userMiddleware } from '@/server/middleware/auth'
 import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
 type Feedback = typeof feedbacks.$inferSelect
 
 export const getFeedbacks = createServerFn({ method: 'GET' })
-  .inputValidator((projectId: number) => projectId)
+  .inputValidator(paginatedProjectSchema)
   .middleware([userMiddleware])
-  .handler(async ({ data: projectId, context }): Promise<Result<Feedback[]>> => {
-    const ownership = await assertProjectOwner(context.user.id, projectId)
+  .handler(async ({ data, context }): Promise<Result<{ feedbacks: Feedback[]; total: number; page: number; limit: number }>> => {
+    const ownership = await assertProjectOwner(context.user.id, data.projectId)
     if (!ownership.ok) return ownership
+
+    const page = data.page ?? 1
+    const limit = data.limit ?? 50
+    const offset = (page - 1) * limit
+
+    const [countResult] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(feedbacks)
+      .where(eq(feedbacks.projectId, data.projectId))
 
     const result = await db
       .select()
       .from(feedbacks)
-      .where(eq(feedbacks.projectId, projectId))
+      .where(eq(feedbacks.projectId, data.projectId))
       .orderBy(desc(feedbacks.votesCount))
+      .limit(limit)
+      .offset(offset)
 
-    return ok(result)
+    return ok({ feedbacks: result, total: countResult.count, page, limit })
   })
 
 export const updateFeedbackStatus = createServerFn({ method: 'POST' })
@@ -72,23 +83,36 @@ export const deleteFeedback = createServerFn({ method: 'POST' })
 // Public endpoints (no auth required)
 
 export const getPublicFeedbacks = createServerFn({ method: 'GET' })
-  .inputValidator((slug: string) => slug)
-  .handler(async ({ data: slug }): Promise<Result<{ project: typeof projects.$inferSelect; feedbacks: Feedback[] }>> => {
+  .inputValidator(paginatedSlugSchema)
+  .handler(async ({ data }): Promise<Result<{ project: typeof projects.$inferSelect; feedbacks: Feedback[]; total: number; page: number; limit: number }>> => {
     const [project] = await db
       .select()
       .from(projects)
-      .where(and(eq(projects.slug, slug), eq(projects.isPublic, true)))
+      .where(and(eq(projects.slug, data.slug), eq(projects.isPublic, true)))
       .limit(1)
 
     if (!project) return err('Project not found')
 
+    const page = data.page ?? 1
+    const limit = data.limit ?? 20
+    const offset = (page - 1) * limit
+
+    const whereClause = eq(feedbacks.projectId, project.id)
+
+    const [countResult] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(feedbacks)
+      .where(whereClause)
+
     const items = await db
       .select()
       .from(feedbacks)
-      .where(eq(feedbacks.projectId, project.id))
+      .where(whereClause)
       .orderBy(desc(feedbacks.votesCount))
+      .limit(limit)
+      .offset(offset)
 
-    return ok({ project, feedbacks: items })
+    return ok({ project, feedbacks: items, total: countResult.count, page, limit })
   })
 
 export const submitFeedback = createServerFn({ method: 'POST' })

@@ -54,3 +54,25 @@ export const voteFeedbackSchema = z.object({
   feedbackId: z.number(),
   visitorId: z.string().min(1),
 })
+
+export const paginatedSlugSchema = z.object({
+  slug: z.string(),
+  page: z.number().min(1).default(1),
+  limit: z.number().min(1).max(100).default(20),
+})
+
+export const paginatedProjectSchema = z.object({
+  projectId: z.number(),
+  page: z.number().min(1).default(1),
+  limit: z.number().min(1).max(100).default(20),
+})
+
+export const reorderRoadmapItemsSchema = z.object({
+  items: z.array(
+    z.object({
+      id: z.number(),
+      status: z.enum(['planned', 'in_progress', 'done']),
+      order: z.number(),
+    }),
+  ),
+})
