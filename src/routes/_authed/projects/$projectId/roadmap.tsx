@@ -75,7 +75,6 @@ function SortableCard({
   item: Item
   onDelete: (id: number) => void
 }) {
-  const { t } = useTranslation()
   const {
     attributes,
     listeners,
