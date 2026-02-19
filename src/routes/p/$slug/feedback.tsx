@@ -33,6 +33,22 @@ import { FEEDBACK_CATEGORIES, APP_NAME } from '@/lib/constants'
 
 export const Route = createFileRoute('/p/$slug/feedback')({
   loader: ({ params }) => getPublicFeedbacks({ data: params.slug }),
+  head: ({ loaderData }) => {
+    const name = loaderData?.ok ? loaderData.data.project.name : ''
+    const desc = loaderData?.ok
+      ? (loaderData.data.project.description ?? `Feedback for ${name}`)
+      : ''
+    const title = name ? `${name} — Feedback` : 'Feedback'
+    return {
+      meta: [
+        { title },
+        { name: 'description', content: desc },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: desc },
+        { property: 'og:type', content: 'website' },
+      ],
+    }
+  },
   component: PublicFeedbackPage,
 })
 
