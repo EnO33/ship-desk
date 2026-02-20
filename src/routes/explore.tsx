@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Folder, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,22 @@ function ExplorePage() {
   const { search } = Route.useSearch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [query, setQuery] = useState(search ?? '')
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
+
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      navigate({
+        to: '/explore',
+        search: { page: 1, search: query || undefined },
+        replace: true,
+      })
+    }, 300)
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [query, navigate])
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -45,16 +62,9 @@ function ExplorePage() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder={t('explore.searchPlaceholder')}
-                defaultValue={search ?? ''}
+                value={query}
                 className="pl-9"
-                onChange={(e) => {
-                  const value = e.target.value
-                  navigate({
-                    to: '/explore',
-                    search: { page: 1, search: value || undefined },
-                    replace: true,
-                  })
-                }}
+                onChange={(e) => setQuery(e.target.value)}
               />
             </div>
           </div>
