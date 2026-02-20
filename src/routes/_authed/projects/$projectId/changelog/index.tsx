@@ -83,11 +83,13 @@ function ChangelogListPage() {
               <div className="flex items-center gap-3">
                 <CardTitle className="text-lg">{entry.title}</CardTitle>
                 {entry.version && (
-                  <Badge variant="outline">v{entry.version}</Badge>
+                  <Badge className="bg-primary/10 text-primary hover:bg-primary/10">v{entry.version}</Badge>
                 )}
                 <Badge
-                  variant={
-                    entry.status === 'published' ? 'default' : 'secondary'
+                  className={
+                    entry.status === 'published'
+                      ? 'bg-green-500/10 text-green-700 hover:bg-green-500/10 dark:text-green-400'
+                      : 'bg-amber-500/10 text-amber-700 hover:bg-amber-500/10 dark:text-amber-400'
                   }
                 >
                   {t(`changelog.status.${entry.status}`)}
