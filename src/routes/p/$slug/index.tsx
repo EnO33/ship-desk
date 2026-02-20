@@ -50,21 +50,24 @@ function PublicChangelogPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+        <div className="container mx-auto px-4 py-4">
           <h1 className="text-xl font-bold">{project.name}</h1>
-          <nav className="flex gap-4 text-sm">
+          {project.description && (
+            <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
+          )}
+          <nav className="mt-4 flex gap-1">
             <Link
               to="/p/$slug"
               params={{ slug }}
               search={{ page: 1 }}
-              className="font-medium text-primary"
+              className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
             >
               {t('project.changelog')}
             </Link>
             <Link
               to="/p/$slug/roadmap"
               params={{ slug }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.roadmap')}
             </Link>
@@ -72,7 +75,7 @@ function PublicChangelogPage() {
               to="/p/$slug/feedback"
               params={{ slug }}
               search={{ page: 1 }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.feedback')}
             </Link>
@@ -87,14 +90,14 @@ function PublicChangelogPage() {
           <p className="text-muted-foreground">{t('changelog.noEntries')}</p>
         )}
 
-        <div className="space-y-8">
+        <div className="space-y-10">
           {entries.map((entry) => (
-            <article key={entry.id}>
+            <article key={entry.id} className="border-l-2 border-primary/20 pl-6">
               <div className="flex items-center gap-3 mb-2">
                 {entry.version && (
-                  <Badge variant="outline">v{entry.version}</Badge>
+                  <Badge className="bg-primary/10 text-primary hover:bg-primary/10">v{entry.version}</Badge>
                 )}
-                <time className="text-sm text-muted-foreground">
+                <time className="text-sm font-medium text-muted-foreground">
                   {entry.publishedAt
                     ? new Date(entry.publishedAt).toLocaleDateString()
                     : ''}
@@ -105,7 +108,6 @@ function PublicChangelogPage() {
                 className="prose prose-neutral dark:prose-invert mt-2 max-w-none text-muted-foreground"
                 dangerouslySetInnerHTML={{ __html: entry.content }}
               />
-              <hr className="mt-8" />
             </article>
           ))}
         </div>
@@ -120,7 +122,7 @@ function PublicChangelogPage() {
         />
       </main>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
         Powered by {APP_NAME}
       </footer>
     </div>
