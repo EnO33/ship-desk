@@ -25,7 +25,7 @@ export const Route = createFileRoute('/explore')({
 
 function ExplorePage() {
   const result = Route.useLoaderData()
-  const { page, search } = Route.useSearch()
+  const { search } = Route.useSearch()
   const { t } = useTranslation()
   const navigate = useNavigate()
 
