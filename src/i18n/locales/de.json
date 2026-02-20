@@ -133,5 +133,15 @@
     "noFeedback": "Noch kein Feedback. Sei der Erste!",
     "deleteConfirm": "Dies wird dieses Feedback dauerhaft löschen.",
     "searchPlaceholder": "Feedback suchen..."
+  },
+  "widget": {
+    "title": "Einbettbares Widget",
+    "description": "Füge ein \"Was gibt's Neues\"-Widget zu deiner Website hinzu. Besucher sehen einen schwebenden Button mit den neuesten Changelog-Einträgen.",
+    "embedCode": "Einbettungscode",
+    "copied": "Kopiert!",
+    "poweredBy": "Bereitgestellt von",
+    "viewAll": "Alle Updates anzeigen",
+    "whatsNew": "Was gibt's Neues",
+    "noUpdates": "Noch keine Updates."
   }
 }

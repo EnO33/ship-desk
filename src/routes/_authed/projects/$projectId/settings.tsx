@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Code, Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,6 +44,12 @@ function SettingsPage() {
   const [isPublic, setIsPublic] = useState(project?.isPublic ?? true)
   const [isSaving, setIsSaving] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [origin, setOrigin] = useState('')
+
+  useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
 
   if (!result.ok) {
     return <p className="text-destructive">{result.error}</p>
@@ -81,6 +87,17 @@ function SettingsPage() {
     }
     toast.success(t('common.delete'))
     navigate({ to: '/dashboard' })
+  }
+
+  const embedCode = origin
+    ? `<script src="${origin}/widget.js" data-slug="${slug}" data-position="bottom-right" data-theme="system" defer></script>`
+    : ''
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(embedCode)
+    setCopied(true)
+    toast.success(t('widget.copied'))
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -142,6 +159,41 @@ function SettingsPage() {
               {t('common.save')}
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Code className="h-4 w-4" />
+            {t('widget.title')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            {t('widget.description')}
+          </p>
+          <Label>{t('widget.embedCode')}</Label>
+          <div className="relative">
+            <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">
+              <code>{embedCode}</code>
+            </pre>
+            {embedCode && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-2 h-7 w-7 p-0"
+                onClick={handleCopy}
+              >
+                {copied ? (
+                  <Check className="h-3.5 w-3.5 text-green-500" />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" />
+                )}
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
 
