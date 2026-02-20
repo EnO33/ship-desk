@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { Pagination } from '@/components/shared/pagination'
+import { Header } from '@/components/layout/header'
 import { getPublicChangelogs } from '@/server/functions/changelogs'
 import { APP_NAME } from '@/lib/constants'
 
@@ -49,11 +50,23 @@ function PublicChangelogPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <Header />
+
+      <div className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <h1 className="text-xl font-bold">{project.name}</h1>
+          <nav className="mb-3 flex items-center gap-1.5 text-sm">
+            <Link
+              to="/explore"
+              search={{ page: 1, search: undefined }}
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t('explore.title')}
+            </Link>
+            <span className="text-muted-foreground/50">/</span>
+            <span className="font-medium">{project.name}</span>
+          </nav>
           {project.description && (
-            <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
+            <p className="text-sm text-muted-foreground">{project.description}</p>
           )}
           <nav className="mt-4 flex gap-1">
             <Link
@@ -81,7 +94,7 @@ function PublicChangelogPage() {
             </Link>
           </nav>
         </div>
-      </header>
+      </div>
 
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <h2 className="mb-8 text-3xl font-bold">{t('changelog.title')}</h2>
@@ -123,7 +136,7 @@ function PublicChangelogPage() {
       </main>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        Powered by {APP_NAME}
+        Powered by <Link to="/" className="font-medium text-foreground hover:text-primary">{APP_NAME}</Link>
       </footer>
     </div>
   )
