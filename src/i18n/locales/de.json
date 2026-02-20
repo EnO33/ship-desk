@@ -38,7 +38,8 @@
     "subtitle": "Entdecke öffentliche Projekte, die mit ShipDesk erstellt wurden",
     "searchPlaceholder": "Projekte suchen...",
     "noProjects": "Keine öffentlichen Projekte gefunden.",
-    "viewAll": "Alle Projekte anzeigen"
+    "viewAll": "Alle Projekte anzeigen",
+    "publicProjects": "öffentliche Projekte zum Entdecken"
   },
   "landing": {
     "hero": {

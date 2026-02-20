@@ -78,6 +78,16 @@ export const updateProject = createServerFn({ method: 'POST' })
     return ok(project)
   })
 
+export const getPublicProjectsCount = createServerFn({ method: 'GET' })
+  .handler(async (): Promise<Result<number>> => {
+    const [result] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(projects)
+      .where(eq(projects.isPublic, true))
+
+    return ok(result.count)
+  })
+
 export const getPublicProjects = createServerFn({ method: 'GET' })
   .inputValidator(paginatedSearchSchema)
   .handler(async ({ data }): Promise<Result<{ projects: Project[]; total: number; page: number; limit: number }>> => {
