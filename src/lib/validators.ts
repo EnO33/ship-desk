@@ -12,7 +12,7 @@ export const createProjectSchema = z.object({
 
 export const updateProjectSchema = createProjectSchema
   .partial()
-  .extend({ id: z.number() })
+  .extend({ id: z.number(), isPublic: z.boolean().optional() })
 
 export const createChangelogSchema = z.object({
   projectId: z.number(),

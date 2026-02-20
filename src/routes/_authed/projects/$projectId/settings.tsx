@@ -65,6 +65,7 @@ function SettingsPage() {
         name,
         slug,
         description: description || undefined,
+        isPublic,
       },
     })
 
