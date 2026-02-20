@@ -150,6 +150,13 @@ function PublicFeedbackPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
+          <Link
+            to="/explore"
+            search={{ page: 1, search: undefined }}
+            className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span>&larr;</span> {t('explore.title')}
+          </Link>
           <h1 className="text-xl font-bold">{project.name}</h1>
           {project.description && (
             <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
@@ -316,7 +323,7 @@ function PublicFeedbackPage() {
       </main>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        Powered by {APP_NAME}
+        Powered by <Link to="/" className="font-medium text-foreground hover:text-primary">{APP_NAME}</Link>
       </footer>
     </div>
   )
