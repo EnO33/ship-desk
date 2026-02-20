@@ -33,6 +33,14 @@
       "system": "System"
     }
   },
+  "explore": {
+    "title": "Explore Projects",
+    "subtitle": "Discover public projects built with ShipDesk",
+    "searchPlaceholder": "Search projects...",
+    "noProjects": "No public projects found.",
+    "viewAll": "View all projects",
+    "publicProjects": "public projects to explore"
+  },
   "landing": {
     "hero": {
       "title": "Your product's command center",

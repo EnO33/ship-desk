@@ -33,6 +33,14 @@
       "system": "Sistema"
     }
   },
+  "explore": {
+    "title": "Explorar proyectos",
+    "subtitle": "Descubre proyectos públicos creados con ShipDesk",
+    "searchPlaceholder": "Buscar proyectos...",
+    "noProjects": "No se encontraron proyectos públicos.",
+    "viewAll": "Ver todos los proyectos",
+    "publicProjects": "proyectos públicos para explorar"
+  },
   "landing": {
     "hero": {
       "title": "El centro de control de tu producto",

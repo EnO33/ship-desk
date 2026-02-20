@@ -5,8 +5,12 @@ import { FileText, Map, MessageSquare, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { getPublicProjectsCount } from '@/server/functions/projects'
 
-export const Route = createFileRoute('/')({ component: LandingPage })
+export const Route = createFileRoute('/')({
+  loader: () => getPublicProjectsCount(),
+  component: LandingPage,
+})
 
 const featureIcons = {
   changelog: FileText,
@@ -15,6 +19,7 @@ const featureIcons = {
 } as const
 
 function LandingPage() {
+  const result = Route.useLoaderData()
   const { t } = useTranslation()
 
   return (
@@ -79,6 +84,24 @@ function LandingPage() {
             )}
           </div>
         </section>
+
+        {/* Public Projects CTA */}
+        {result.ok && result.data > 0 && (
+          <section className="border-t">
+            <div className="container mx-auto px-4 py-20 text-center">
+              <p className="text-5xl font-bold">{result.data}</p>
+              <p className="mt-2 text-lg text-muted-foreground">
+                {t('explore.publicProjects')}
+              </p>
+              <Link to="/explore" search={{ page: 1, search: undefined }} className="mt-6 inline-block">
+                <Button size="lg" variant="outline" className="gap-2">
+                  {t('explore.viewAll')}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />

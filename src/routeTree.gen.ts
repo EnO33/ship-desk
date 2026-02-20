@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
@@ -24,6 +25,11 @@ import { Route as AuthedProjectsProjectIdChangelogIndexRouteImport } from './rou
 import { Route as AuthedProjectsProjectIdChangelogNewRouteImport } from './routes/_authed/projects/$projectId/changelog/new'
 import { Route as AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport } from './routes/_authed/projects/$projectId/changelog/$changelogId/edit'
 
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
@@ -103,6 +109,7 @@ const AuthedProjectsProjectIdChangelogChangelogIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/projects/new': typeof AuthedProjectsNewRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/projects/new': typeof AuthedProjectsNewRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/explore': typeof ExploreRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
   '/_authed/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/_authed/projects/new': typeof AuthedProjectsNewRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/explore'
     | '/dashboard'
     | '/projects/$projectId'
     | '/projects/new'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/explore'
     | '/dashboard'
     | '/projects/$projectId'
     | '/projects/new'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authed'
+    | '/explore'
     | '/_authed/dashboard'
     | '/_authed/projects/$projectId'
     | '/_authed/projects/new'
@@ -200,6 +212,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
+  ExploreRoute: typeof ExploreRoute
   PSlugFeedbackRoute: typeof PSlugFeedbackRoute
   PSlugRoadmapRoute: typeof PSlugRoadmapRoute
   PSlugIndexRoute: typeof PSlugIndexRoute
@@ -207,6 +220,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed': {
       id: '/_authed'
       path: ''
@@ -354,6 +374,7 @@ const AuthedRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
+  ExploreRoute: ExploreRoute,
   PSlugFeedbackRoute: PSlugFeedbackRoute,
   PSlugRoadmapRoute: PSlugRoadmapRoute,
   PSlugIndexRoute: PSlugIndexRoute,

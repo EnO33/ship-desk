@@ -24,6 +24,11 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <Link to="/explore" search={{ page: 1, search: undefined }}>
+            <Button variant="ghost" size="sm">
+              {t('explore.title')}
+            </Button>
+          </Link>
           <ThemeSwitcher />
           <LocaleSwitcher />
           <SignedOut>

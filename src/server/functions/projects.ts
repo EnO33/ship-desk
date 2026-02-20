@@ -1,9 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
 import { projects } from '@/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, ilike, desc, sql } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
-import { createProjectSchema, updateProjectSchema } from '@/lib/validators'
+import { createProjectSchema, updateProjectSchema, paginatedSearchSchema } from '@/lib/validators'
 import { userMiddleware } from '@/server/middleware/auth'
 import { assertProjectOwner } from '@/server/lib/assert-project-owner'
 
@@ -76,6 +76,43 @@ export const updateProject = createServerFn({ method: 'POST' })
 
     if (!project) return err('Failed to update project')
     return ok(project)
+  })
+
+export const getPublicProjectsCount = createServerFn({ method: 'GET' })
+  .handler(async (): Promise<Result<number>> => {
+    const [result] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(projects)
+      .where(eq(projects.isPublic, true))
+
+    return ok(result.count)
+  })
+
+export const getPublicProjects = createServerFn({ method: 'GET' })
+  .inputValidator(paginatedSearchSchema)
+  .handler(async ({ data }): Promise<Result<{ projects: Project[]; total: number; page: number; limit: number }>> => {
+    const page = data.page ?? 1
+    const limit = data.limit ?? 12
+    const offset = (page - 1) * limit
+
+    const conditions = data.search
+      ? and(eq(projects.isPublic, true), ilike(projects.name, `%${data.search}%`))
+      : eq(projects.isPublic, true)
+
+    const [countResult] = await db
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(projects)
+      .where(conditions)
+
+    const items = await db
+      .select()
+      .from(projects)
+      .where(conditions)
+      .orderBy(desc(projects.createdAt))
+      .limit(limit)
+      .offset(offset)
+
+    return ok({ projects: items, total: countResult.count, page, limit })
   })
 
 export const deleteProject = createServerFn({ method: 'POST' })

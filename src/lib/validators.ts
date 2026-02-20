@@ -67,6 +67,12 @@ export const paginatedProjectSchema = z.object({
   limit: z.number().min(1).max(100).default(20),
 })
 
+export const paginatedSearchSchema = z.object({
+  page: z.number().min(1).default(1),
+  limit: z.number().min(1).max(100).default(12),
+  search: z.string().optional(),
+})
+
 export const reorderRoadmapItemsSchema = z.object({
   items: z.array(
     z.object({
