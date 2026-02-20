@@ -149,21 +149,24 @@ function PublicFeedbackPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+        <div className="container mx-auto px-4 py-4">
           <h1 className="text-xl font-bold">{project.name}</h1>
-          <nav className="flex gap-4 text-sm">
+          {project.description && (
+            <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
+          )}
+          <nav className="mt-4 flex gap-1">
             <Link
               to="/p/$slug"
               params={{ slug }}
               search={{ page: 1 }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.changelog')}
             </Link>
             <Link
               to="/p/$slug/roadmap"
               params={{ slug }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.roadmap')}
             </Link>
@@ -171,7 +174,7 @@ function PublicFeedbackPage() {
               to="/p/$slug/feedback"
               params={{ slug }}
               search={{ page: 1 }}
-              className="font-medium text-primary"
+              className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
             >
               {t('project.feedback')}
             </Link>
@@ -312,7 +315,7 @@ function PublicFeedbackPage() {
         />
       </main>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
         Powered by {APP_NAME}
       </footer>
     </div>

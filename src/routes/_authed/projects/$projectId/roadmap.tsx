@@ -22,7 +22,6 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -123,7 +122,7 @@ function SortableCard({
 
 function DragOverlayCard({ item }: { item: Item }) {
   return (
-    <Card className="shadow-lg">
+    <Card className="shadow-xl shadow-primary/10">
       <CardContent className="flex items-start gap-2 p-4">
         <GripVertical className="mt-0.5 h-4 w-4 text-muted-foreground" />
         <div className="flex-1">
@@ -423,11 +422,11 @@ function DroppableColumn({
 
   return (
     <div ref={setNodeRef} className="space-y-3">
-      <div className="flex items-center gap-2">
-        <Badge className={statusColors[status]}>
+      <div className={`flex items-center gap-2 rounded-lg p-3 ${statusColors[status]}`}>
+        <span className="font-medium">
           {t(`roadmap.status.${status}`)}
-        </Badge>
-        <span className="text-sm text-muted-foreground">{items.length}</span>
+        </span>
+        <span className="text-sm opacity-70">{items.length}</span>
       </div>
       <SortableContext
         items={items.map((i) => i.id)}

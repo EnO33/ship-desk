@@ -24,11 +24,14 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <Link to="/explore" search={{ page: 1, search: undefined }}>
-            <Button variant="ghost" size="sm">
-              {t('explore.title')}
-            </Button>
+          <Link
+            to="/explore"
+            search={{ page: 1, search: undefined }}
+            className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+          >
+            {t('explore.title')}
           </Link>
+          <div className="mx-1 h-5 w-px bg-border" />
           <ThemeSwitcher />
           <LocaleSwitcher />
           <SignedOut>

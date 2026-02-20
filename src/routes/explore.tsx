@@ -90,7 +90,7 @@ function ExplorePage() {
                     params={{ slug: project.slug }}
                     search={{ page: 1 }}
                   >
-                    <Card className="transition-shadow hover:shadow-md">
+                    <Card className="border-l-4 border-l-primary/30 transition-all hover:border-l-primary/60 hover:shadow-md">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                           <Folder className="h-5 w-5 text-primary" />

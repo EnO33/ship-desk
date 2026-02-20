@@ -120,7 +120,7 @@ function FeedbackPage() {
             <Badge
               key={s}
               variant="outline"
-              className={`cursor-pointer ${statusFilter.has(s) ? 'border-primary text-primary' : ''}`}
+              className={`cursor-pointer ${statusFilter.has(s) ? 'border-primary text-primary ring-2 ring-primary/20' : ''}`}
               onClick={() => setStatusFilter((prev) => toggleFilter(prev, s))}
             >
               {t(`feedback.status.${s}`)}

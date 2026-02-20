@@ -145,7 +145,7 @@ function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-destructive">
+      <Card className="border-destructive/30">
         <CardHeader>
           <CardTitle className="text-destructive">
             {t('common.dangerZone')}

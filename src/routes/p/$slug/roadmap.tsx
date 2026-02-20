@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { getPublicRoadmap } from '@/server/functions/roadmap'
 import { ROADMAP_STATUSES, type RoadmapStatus, APP_NAME } from '@/lib/constants'
@@ -50,21 +49,24 @@ function PublicRoadmapPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+        <div className="container mx-auto px-4 py-4">
           <h1 className="text-xl font-bold">{project.name}</h1>
-          <nav className="flex gap-4 text-sm">
+          {project.description && (
+            <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
+          )}
+          <nav className="mt-4 flex gap-1">
             <Link
               to="/p/$slug"
               params={{ slug }}
               search={{ page: 1 }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.changelog')}
             </Link>
             <Link
               to="/p/$slug/roadmap"
               params={{ slug }}
-              className="font-medium text-primary"
+              className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
             >
               {t('project.roadmap')}
             </Link>
@@ -72,7 +74,7 @@ function PublicRoadmapPage() {
               to="/p/$slug/feedback"
               params={{ slug }}
               search={{ page: 1 }}
-              className="text-muted-foreground hover:text-foreground"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('project.feedback')}
             </Link>
@@ -92,17 +94,17 @@ function PublicRoadmapPage() {
             const columnItems = items.filter((i) => i.status === status)
             return (
               <div key={status} className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Badge className={statusColors[status]}>
+                <div className={`flex items-center gap-2 rounded-lg p-3 ${statusColors[status]}`}>
+                  <span className="font-medium">
                     {t(`roadmap.status.${status}`)}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
+                  </span>
+                  <span className="text-sm opacity-70">
                     {columnItems.length}
                   </span>
                 </div>
                 <div className="space-y-2">
                   {columnItems.map((item) => (
-                    <Card key={item.id}>
+                    <Card key={item.id} className="transition-shadow hover:shadow-md">
                       <CardContent className="p-4">
                         <p className="font-medium">{item.title}</p>
                         {item.description && (
@@ -120,7 +122,7 @@ function PublicRoadmapPage() {
         </div>
       </main>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
         Powered by {APP_NAME}
       </footer>
     </div>
