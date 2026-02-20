@@ -28,11 +28,11 @@ export function ProjectSidebar({ projectId }: { projectId: string }) {
             params={{ projectId }}
             search={'search' in rest ? rest.search : undefined}
             className={cn(
-              'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+              'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/5 hover:text-primary',
             )}
             activeProps={{
               className:
-                'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-accent text-accent-foreground',
+                'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-primary/10 text-primary',
             }}
           >
             <Icon className="h-4 w-4" />
