@@ -33,6 +33,13 @@
       "system": "System"
     }
   },
+  "explore": {
+    "title": "Projekte entdecken",
+    "subtitle": "Entdecke öffentliche Projekte, die mit ShipDesk erstellt wurden",
+    "searchPlaceholder": "Projekte suchen...",
+    "noProjects": "Keine öffentlichen Projekte gefunden.",
+    "viewAll": "Alle Projekte anzeigen"
+  },
   "landing": {
     "hero": {
       "title": "Die Kommandozentrale deines Produkts",
