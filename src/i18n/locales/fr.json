@@ -133,5 +133,15 @@
     "noFeedback": "Aucun feedback pour le moment. Soyez le premier !",
     "deleteConfirm": "Cela supprimera définitivement ce feedback.",
     "searchPlaceholder": "Rechercher un feedback..."
+  },
+  "widget": {
+    "title": "Widget intégrable",
+    "description": "Ajoutez un widget \"Quoi de neuf\" à votre site web. Vos visiteurs verront un bouton flottant ouvrant les dernières entrées du changelog.",
+    "embedCode": "Code d'intégration",
+    "copied": "Copié !",
+    "poweredBy": "Propulsé par",
+    "viewAll": "Voir toutes les mises à jour",
+    "whatsNew": "Quoi de neuf",
+    "noUpdates": "Aucune mise à jour."
   }
 }

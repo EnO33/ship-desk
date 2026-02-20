@@ -133,5 +133,15 @@
     "noFeedback": "No feedback yet. Be the first!",
     "deleteConfirm": "This will permanently delete this feedback.",
     "searchPlaceholder": "Search feedback..."
+  },
+  "widget": {
+    "title": "Embeddable Widget",
+    "description": "Add a \"What's New\" widget to your website. Your visitors will see a floating button that opens the latest changelog entries.",
+    "embedCode": "Embed Code",
+    "copied": "Copied to clipboard!",
+    "poweredBy": "Powered by",
+    "viewAll": "View all updates",
+    "whatsNew": "What's New",
+    "noUpdates": "No updates yet."
   }
 }

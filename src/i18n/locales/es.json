@@ -133,5 +133,15 @@
     "noFeedback": "No hay feedback aún. ¡Sé el primero!",
     "deleteConfirm": "Esto eliminará permanentemente este feedback.",
     "searchPlaceholder": "Buscar feedback..."
+  },
+  "widget": {
+    "title": "Widget integrable",
+    "description": "Agrega un widget \"Novedades\" a tu sitio web. Tus visitantes verán un botón flotante con las últimas entradas del changelog.",
+    "embedCode": "Código de integración",
+    "copied": "¡Copiado!",
+    "poweredBy": "Impulsado por",
+    "viewAll": "Ver todas las actualizaciones",
+    "whatsNew": "Novedades",
+    "noUpdates": "Sin actualizaciones."
   }
 }
