@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Pagination } from '@/components/shared/pagination'
+import { Header } from '@/components/layout/header'
 import {
   getPublicFeedbacks,
   submitFeedback,
@@ -148,18 +149,23 @@ function PublicFeedbackPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <Header />
+
+      <div className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <Link
-            to="/explore"
-            search={{ page: 1, search: undefined }}
-            className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <span>&larr;</span> {t('explore.title')}
-          </Link>
-          <h1 className="text-xl font-bold">{project.name}</h1>
+          <nav className="mb-3 flex items-center gap-1.5 text-sm">
+            <Link
+              to="/explore"
+              search={{ page: 1, search: undefined }}
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t('explore.title')}
+            </Link>
+            <span className="text-muted-foreground/50">/</span>
+            <span className="font-medium">{project.name}</span>
+          </nav>
           {project.description && (
-            <p className="mt-1 text-sm text-muted-foreground">{project.description}</p>
+            <p className="text-sm text-muted-foreground">{project.description}</p>
           )}
           <nav className="mt-4 flex gap-1">
             <Link
@@ -187,7 +193,7 @@ function PublicFeedbackPage() {
             </Link>
           </nav>
         </div>
-      </header>
+      </div>
 
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <div className="mb-8 flex items-center justify-between">
