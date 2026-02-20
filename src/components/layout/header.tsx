@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Rocket } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { LocaleSwitcher } from '@/components/shared/locale-switcher'
+import { ThemeSwitcher } from '@/components/shared/theme-switcher'
 import { APP_NAME } from '@/lib/constants'
 
 export function Header() {
@@ -23,6 +24,7 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <ThemeSwitcher />
           <LocaleSwitcher />
           <SignedOut>
             <SignInButton mode="modal">

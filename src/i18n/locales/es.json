@@ -25,7 +25,13 @@
     "next": "Siguiente",
     "results": "resultados",
     "filterBy": "Filtrar por",
-    "clearFilters": "Borrar filtros"
+    "clearFilters": "Borrar filtros",
+    "theme": {
+      "toggle": "Cambiar tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    }
   },
   "landing": {
     "hero": {

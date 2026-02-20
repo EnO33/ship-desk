@@ -2,6 +2,7 @@ import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-r
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { ClerkProvider } from '@clerk/tanstack-react-start'
+import { ThemeProvider } from 'next-themes'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { Toaster } from '@/components/ui/sonner'
 
@@ -47,10 +48,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 function RootLayout() {
   return (
     <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
-      <TooltipProvider>
-        <Outlet />
-        <Toaster richColors position="bottom-right" />
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <TooltipProvider>
+          <Outlet />
+          <Toaster richColors position="bottom-right" />
+        </TooltipProvider>
+      </ThemeProvider>
     </ClerkProvider>
   )
 }

@@ -25,7 +25,13 @@
     "next": "Weiter",
     "results": "Ergebnisse",
     "filterBy": "Filtern nach",
-    "clearFilters": "Filter löschen"
+    "clearFilters": "Filter löschen",
+    "theme": {
+      "toggle": "Design wechseln",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    }
   },
   "landing": {
     "hero": {
