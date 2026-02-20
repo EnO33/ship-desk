@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WidgetSlugRouteImport } from './routes/widget/$slug'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
 import { Route as PSlugIndexRouteImport } from './routes/p/$slug/index'
 import { Route as PSlugRoadmapRouteImport } from './routes/p/$slug/roadmap'
@@ -37,6 +38,11 @@ const AuthedRoute = AuthedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WidgetSlugRoute = WidgetSlugRouteImport.update({
+  id: '/widget/$slug',
+  path: '/widget/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRoute
   '/dashboard': typeof AuthedDashboardRoute
+  '/widget/$slug': typeof WidgetSlugRoute
   '/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/projects/new': typeof AuthedProjectsNewRoute
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRoute
   '/dashboard': typeof AuthedDashboardRoute
+  '/widget/$slug': typeof WidgetSlugRoute
   '/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/projects/new': typeof AuthedProjectsNewRoute
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/explore': typeof ExploreRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
+  '/widget/$slug': typeof WidgetSlugRoute
   '/_authed/projects/$projectId': typeof AuthedProjectsProjectIdRouteRouteWithChildren
   '/_authed/projects/new': typeof AuthedProjectsNewRoute
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/dashboard'
+    | '/widget/$slug'
     | '/projects/$projectId'
     | '/projects/new'
     | '/p/$slug/feedback'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/dashboard'
+    | '/widget/$slug'
     | '/projects/$projectId'
     | '/projects/new'
     | '/p/$slug/feedback'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/explore'
     | '/_authed/dashboard'
+    | '/widget/$slug'
     | '/_authed/projects/$projectId'
     | '/_authed/projects/new'
     | '/p/$slug/feedback'
@@ -213,6 +225,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   ExploreRoute: typeof ExploreRoute
+  WidgetSlugRoute: typeof WidgetSlugRoute
   PSlugFeedbackRoute: typeof PSlugFeedbackRoute
   PSlugRoadmapRoute: typeof PSlugRoadmapRoute
   PSlugIndexRoute: typeof PSlugIndexRoute
@@ -239,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/widget/$slug': {
+      id: '/widget/$slug'
+      path: '/widget/$slug'
+      fullPath: '/widget/$slug'
+      preLoaderRoute: typeof WidgetSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/dashboard': {
@@ -375,6 +395,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
   ExploreRoute: ExploreRoute,
+  WidgetSlugRoute: WidgetSlugRoute,
   PSlugFeedbackRoute: PSlugFeedbackRoute,
   PSlugRoadmapRoute: PSlugRoadmapRoute,
   PSlugIndexRoute: PSlugIndexRoute,
