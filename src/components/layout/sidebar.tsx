@@ -20,7 +20,7 @@ export function ProjectSidebar({ projectId }: { projectId: string }) {
 
   return (
     <aside className="w-56 shrink-0 border-r bg-muted/30">
-      <nav className="flex flex-col gap-1 p-3">
+      <nav className="sticky top-14 flex flex-col gap-1 p-3">
         {navItems.map(({ key, icon: Icon, path, ...rest }) => (
           <Link
             key={key}
