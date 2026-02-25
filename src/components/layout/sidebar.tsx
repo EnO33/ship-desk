@@ -4,6 +4,7 @@ import {
   FileText,
   Map,
   MessageSquare,
+  BarChart3,
   Settings,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -12,6 +13,7 @@ const navItems = [
   { key: 'changelog', icon: FileText, path: 'changelog', search: { page: 1 } },
   { key: 'roadmap', icon: Map, path: 'roadmap' },
   { key: 'feedback', icon: MessageSquare, path: 'feedback', search: { page: 1 } },
+  { key: 'analytics', icon: BarChart3, path: 'analytics' },
   { key: 'settings', icon: Settings, path: 'settings' },
 ] as const
 
