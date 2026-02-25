@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent } from '@/components/ui/card'
 import { Header } from '@/components/layout/header'
 import { getPublicRoadmap } from '@/server/functions/roadmap'
+import { trackPageView } from '@/server/functions/analytics'
+import { getVisitorId } from '@/lib/visitor'
 import { ROADMAP_STATUSES, type RoadmapStatus, APP_NAME } from '@/lib/constants'
 
 export const Route = createFileRoute('/p/$slug/roadmap')({
@@ -36,6 +39,11 @@ function PublicRoadmapPage() {
   const result = Route.useLoaderData()
   const { slug } = Route.useParams()
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (!result.ok) return
+    trackPageView({ data: { projectSlug: slug, page: 'roadmap', visitorId: getVisitorId() } })
+  }, [])
 
   if (!result.ok) {
     return (

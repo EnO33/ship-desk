@@ -5,6 +5,8 @@ import { useTheme } from 'next-themes'
 import { Rocket } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { getPublicChangelogs } from '@/server/functions/changelogs'
+import { trackPageView } from '@/server/functions/analytics'
+import { getVisitorId } from '@/lib/visitor'
 import { APP_NAME } from '@/lib/constants'
 
 export const Route = createFileRoute('/widget/$slug')({
@@ -37,6 +39,11 @@ function WidgetPage() {
       setTheme(theme)
     }
   }, [theme, setTheme])
+
+  useEffect(() => {
+    if (!result.ok) return
+    trackPageView({ data: { projectSlug: slug, page: 'widget', visitorId: getVisitorId() } })
+  }, [])
 
   if (!result.ok) {
     return (

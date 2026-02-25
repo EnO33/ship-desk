@@ -1,9 +1,12 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { Pagination } from '@/components/shared/pagination'
 import { Header } from '@/components/layout/header'
 import { getPublicChangelogs } from '@/server/functions/changelogs'
+import { trackPageView } from '@/server/functions/analytics'
+import { getVisitorId } from '@/lib/visitor'
 import { APP_NAME } from '@/lib/constants'
 
 export const Route = createFileRoute('/p/$slug/')({
@@ -37,6 +40,11 @@ function PublicChangelogPage() {
   const { slug } = Route.useParams()
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!result.ok) return
+    trackPageView({ data: { projectSlug: slug, page: 'changelog', visitorId: getVisitorId() } })
+  }, [])
 
   if (!result.ok) {
     return (
