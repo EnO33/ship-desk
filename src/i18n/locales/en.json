@@ -82,7 +82,8 @@
     "public": "Public",
     "private": "Private",
     "visibility": "Visibility",
-    "deleteConfirm": "This will permanently delete this project and all its data."
+    "deleteConfirm": "This will permanently delete this project and all its data.",
+    "analytics": "Analytics"
   },
   "changelog": {
     "title": "Changelog",
@@ -143,5 +144,24 @@
     "viewAll": "View all updates",
     "whatsNew": "What's New",
     "noUpdates": "No updates yet."
+  },
+  "analytics": {
+    "title": "Analytics",
+    "period": {
+      "7": "Last 7 days",
+      "30": "Last 30 days",
+      "90": "Last 90 days"
+    },
+    "totalViews": "Total Views",
+    "changelogViews": "Changelog Views",
+    "feedbacksReceived": "Feedbacks Received",
+    "votesReceived": "Votes Received",
+    "vsLastPeriod": "vs last period",
+    "dailyViews": "Daily Views",
+    "topChangelogs": "Top Changelogs",
+    "feedbackByCategory": "Feedback by Category",
+    "feedbackByStatus": "Feedback by Status",
+    "noData": "No data available for this period.",
+    "views": "views"
   }
 }

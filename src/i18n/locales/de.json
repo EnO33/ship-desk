@@ -82,7 +82,8 @@
     "public": "Öffentlich",
     "private": "Privat",
     "visibility": "Sichtbarkeit",
-    "deleteConfirm": "Dies wird dieses Projekt und alle seine Daten dauerhaft löschen."
+    "deleteConfirm": "Dies wird dieses Projekt und alle seine Daten dauerhaft löschen.",
+    "analytics": "Analytik"
   },
   "changelog": {
     "title": "Changelog",
@@ -143,5 +144,24 @@
     "viewAll": "Alle Updates anzeigen",
     "whatsNew": "Was gibt's Neues",
     "noUpdates": "Noch keine Updates."
+  },
+  "analytics": {
+    "title": "Analytik",
+    "period": {
+      "7": "Letzte 7 Tage",
+      "30": "Letzte 30 Tage",
+      "90": "Letzte 90 Tage"
+    },
+    "totalViews": "Gesamtaufrufe",
+    "changelogViews": "Changelog-Aufrufe",
+    "feedbacksReceived": "Erhaltene Feedbacks",
+    "votesReceived": "Erhaltene Stimmen",
+    "vsLastPeriod": "vs vorheriger Zeitraum",
+    "dailyViews": "Tägliche Aufrufe",
+    "topChangelogs": "Top-Changelogs",
+    "feedbackByCategory": "Feedback nach Kategorie",
+    "feedbackByStatus": "Feedback nach Status",
+    "noData": "Keine Daten für diesen Zeitraum verfügbar.",
+    "views": "Aufrufe"
   }
 }
