@@ -1,9 +1,8 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { ArrowUpCircle } from 'lucide-react'
-import { nanoid } from 'nanoid'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -32,6 +31,8 @@ import {
   voteFeedback,
 } from '@/server/functions/feedbacks'
 import { FEEDBACK_CATEGORIES, APP_NAME } from '@/lib/constants'
+import { getVisitorId } from '@/lib/visitor'
+import { trackPageView } from '@/server/functions/analytics'
 
 export const Route = createFileRoute('/p/$slug/feedback')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -65,22 +66,6 @@ const categoryColors: Record<string, string> = {
   improvement: 'bg-blue-500/10 text-blue-700',
 }
 
-function getVisitorId(): string {
-  const key = 'shipdesk_visitor_id'
-  const stored = globalThis.document?.cookie
-    ?.split('; ')
-    .find((c) => c.startsWith(`${key}=`))
-    ?.split('=')[1]
-
-  if (stored) return stored
-
-  const id = nanoid()
-  if (globalThis.document) {
-    document.cookie = `${key}=${id}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
-  }
-  return id
-}
-
 function PublicFeedbackPage() {
   const result = Route.useLoaderData()
   const { slug } = Route.useParams()
@@ -95,6 +80,11 @@ function PublicFeedbackPage() {
     'feature',
   )
   const [votedIds, setVotedIds] = useState<Set<number>>(new Set())
+
+  useEffect(() => {
+    if (!result.ok) return
+    trackPageView({ data: { projectSlug: slug, page: 'feedback', visitorId: getVisitorId() } })
+  }, [])
 
   if (!result.ok) {
     return (
