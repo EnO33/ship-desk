@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
 import { pageViews, projects, changelogs, feedbacks, feedbackVotes } from '@/db/schema'
-import { eq, and, sql, gte, desc } from 'drizzle-orm'
+import { eq, and, sql, gte, lt, desc } from 'drizzle-orm'
 import { ok, err, type Result } from '@/lib/result'
 import { trackPageViewSchema, analyticsOverviewSchema } from '@/lib/validators'
 import { userMiddleware } from '@/server/middleware/auth'
@@ -99,7 +99,7 @@ export const getAnalyticsOverview = createServerFn({ method: 'GET' })
           and(
             eq(pageViews.projectId, data.projectId),
             gte(pageViews.createdAt, prevPeriodStart),
-            sql`${pageViews.createdAt} < ${periodStart}`,
+            lt(pageViews.createdAt, periodStart),
           ),
         ),
       db
@@ -120,7 +120,7 @@ export const getAnalyticsOverview = createServerFn({ method: 'GET' })
             eq(pageViews.projectId, data.projectId),
             eq(pageViews.page, 'changelog'),
             gte(pageViews.createdAt, prevPeriodStart),
-            sql`${pageViews.createdAt} < ${periodStart}`,
+            lt(pageViews.createdAt, periodStart),
           ),
         ),
       db
@@ -134,7 +134,7 @@ export const getAnalyticsOverview = createServerFn({ method: 'GET' })
           and(
             eq(feedbacks.projectId, data.projectId),
             gte(feedbacks.createdAt, prevPeriodStart),
-            sql`${feedbacks.createdAt} < ${periodStart}`,
+            lt(feedbacks.createdAt, periodStart),
           ),
         ),
       db
@@ -150,7 +150,7 @@ export const getAnalyticsOverview = createServerFn({ method: 'GET' })
           and(
             eq(feedbacks.projectId, data.projectId),
             gte(feedbackVotes.createdAt, prevPeriodStart),
-            sql`${feedbackVotes.createdAt} < ${periodStart}`,
+            lt(feedbackVotes.createdAt, periodStart),
           ),
         ),
     ])
