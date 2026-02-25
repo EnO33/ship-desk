@@ -22,6 +22,7 @@ import { Route as AuthedProjectsProjectIdRouteRouteImport } from './routes/_auth
 import { Route as AuthedProjectsProjectIdSettingsRouteImport } from './routes/_authed/projects/$projectId/settings'
 import { Route as AuthedProjectsProjectIdRoadmapRouteImport } from './routes/_authed/projects/$projectId/roadmap'
 import { Route as AuthedProjectsProjectIdFeedbackRouteImport } from './routes/_authed/projects/$projectId/feedback'
+import { Route as AuthedProjectsProjectIdAnalyticsRouteImport } from './routes/_authed/projects/$projectId/analytics'
 import { Route as AuthedProjectsProjectIdChangelogIndexRouteImport } from './routes/_authed/projects/$projectId/changelog/index'
 import { Route as AuthedProjectsProjectIdChangelogNewRouteImport } from './routes/_authed/projects/$projectId/changelog/new'
 import { Route as AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport } from './routes/_authed/projects/$projectId/changelog/$changelogId/edit'
@@ -94,6 +95,12 @@ const AuthedProjectsProjectIdFeedbackRoute =
     path: '/feedback',
     getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
   } as any)
+const AuthedProjectsProjectIdAnalyticsRoute =
+  AuthedProjectsProjectIdAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
+  } as any)
 const AuthedProjectsProjectIdChangelogIndexRoute =
   AuthedProjectsProjectIdChangelogIndexRouteImport.update({
     id: '/changelog/',
@@ -123,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
   '/p/$slug/roadmap': typeof PSlugRoadmapRoute
   '/p/$slug/': typeof PSlugIndexRoute
+  '/projects/$projectId/analytics': typeof AuthedProjectsProjectIdAnalyticsRoute
   '/projects/$projectId/feedback': typeof AuthedProjectsProjectIdFeedbackRoute
   '/projects/$projectId/roadmap': typeof AuthedProjectsProjectIdRoadmapRoute
   '/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
@@ -140,6 +148,7 @@ export interface FileRoutesByTo {
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
   '/p/$slug/roadmap': typeof PSlugRoadmapRoute
   '/p/$slug': typeof PSlugIndexRoute
+  '/projects/$projectId/analytics': typeof AuthedProjectsProjectIdAnalyticsRoute
   '/projects/$projectId/feedback': typeof AuthedProjectsProjectIdFeedbackRoute
   '/projects/$projectId/roadmap': typeof AuthedProjectsProjectIdRoadmapRoute
   '/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
@@ -159,6 +168,7 @@ export interface FileRoutesById {
   '/p/$slug/feedback': typeof PSlugFeedbackRoute
   '/p/$slug/roadmap': typeof PSlugRoadmapRoute
   '/p/$slug/': typeof PSlugIndexRoute
+  '/_authed/projects/$projectId/analytics': typeof AuthedProjectsProjectIdAnalyticsRoute
   '/_authed/projects/$projectId/feedback': typeof AuthedProjectsProjectIdFeedbackRoute
   '/_authed/projects/$projectId/roadmap': typeof AuthedProjectsProjectIdRoadmapRoute
   '/_authed/projects/$projectId/settings': typeof AuthedProjectsProjectIdSettingsRoute
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/p/$slug/feedback'
     | '/p/$slug/roadmap'
     | '/p/$slug/'
+    | '/projects/$projectId/analytics'
     | '/projects/$projectId/feedback'
     | '/projects/$projectId/roadmap'
     | '/projects/$projectId/settings'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/p/$slug/feedback'
     | '/p/$slug/roadmap'
     | '/p/$slug'
+    | '/projects/$projectId/analytics'
     | '/projects/$projectId/feedback'
     | '/projects/$projectId/roadmap'
     | '/projects/$projectId/settings'
@@ -213,6 +225,7 @@ export interface FileRouteTypes {
     | '/p/$slug/feedback'
     | '/p/$slug/roadmap'
     | '/p/$slug/'
+    | '/_authed/projects/$projectId/analytics'
     | '/_authed/projects/$projectId/feedback'
     | '/_authed/projects/$projectId/roadmap'
     | '/_authed/projects/$projectId/settings'
@@ -324,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProjectsProjectIdFeedbackRouteImport
       parentRoute: typeof AuthedProjectsProjectIdRouteRoute
     }
+    '/_authed/projects/$projectId/analytics': {
+      id: '/_authed/projects/$projectId/analytics'
+      path: '/analytics'
+      fullPath: '/projects/$projectId/analytics'
+      preLoaderRoute: typeof AuthedProjectsProjectIdAnalyticsRouteImport
+      parentRoute: typeof AuthedProjectsProjectIdRouteRoute
+    }
     '/_authed/projects/$projectId/changelog/': {
       id: '/_authed/projects/$projectId/changelog/'
       path: '/changelog'
@@ -349,6 +369,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthedProjectsProjectIdRouteRouteChildren {
+  AuthedProjectsProjectIdAnalyticsRoute: typeof AuthedProjectsProjectIdAnalyticsRoute
   AuthedProjectsProjectIdFeedbackRoute: typeof AuthedProjectsProjectIdFeedbackRoute
   AuthedProjectsProjectIdRoadmapRoute: typeof AuthedProjectsProjectIdRoadmapRoute
   AuthedProjectsProjectIdSettingsRoute: typeof AuthedProjectsProjectIdSettingsRoute
@@ -359,6 +380,8 @@ interface AuthedProjectsProjectIdRouteRouteChildren {
 
 const AuthedProjectsProjectIdRouteRouteChildren: AuthedProjectsProjectIdRouteRouteChildren =
   {
+    AuthedProjectsProjectIdAnalyticsRoute:
+      AuthedProjectsProjectIdAnalyticsRoute,
     AuthedProjectsProjectIdFeedbackRoute: AuthedProjectsProjectIdFeedbackRoute,
     AuthedProjectsProjectIdRoadmapRoute: AuthedProjectsProjectIdRoadmapRoute,
     AuthedProjectsProjectIdSettingsRoute: AuthedProjectsProjectIdSettingsRoute,
