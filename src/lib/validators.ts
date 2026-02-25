@@ -82,3 +82,15 @@ export const reorderRoadmapItemsSchema = z.object({
     }),
   ),
 })
+
+export const trackPageViewSchema = z.object({
+  projectSlug: z.string().min(1),
+  page: z.enum(['changelog', 'roadmap', 'feedback', 'widget']),
+  changelogId: z.number().optional(),
+  visitorId: z.string().min(1),
+})
+
+export const analyticsOverviewSchema = z.object({
+  projectId: z.number(),
+  days: z.union([z.literal(7), z.literal(30), z.literal(90)]).default(30),
+})

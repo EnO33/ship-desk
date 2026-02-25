@@ -24,3 +24,9 @@ export type RoadmapStatus = (typeof ROADMAP_STATUSES)[number]
 
 export const CHANGELOG_STATUSES = ['draft', 'published'] as const
 export type ChangelogStatus = (typeof CHANGELOG_STATUSES)[number]
+
+export const PAGE_VIEW_PAGES = ['changelog', 'roadmap', 'feedback', 'widget'] as const
+export type PageViewPage = (typeof PAGE_VIEW_PAGES)[number]
+
+export const ANALYTICS_PERIODS = [7, 30, 90] as const
+export type AnalyticsPeriod = (typeof ANALYTICS_PERIODS)[number]
