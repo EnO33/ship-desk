@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { SignedIn, SignedOut, SignInButton } from '@clerk/tanstack-react-start'
+import { Show, SignInButton } from '@clerk/tanstack-react-start'
 import { FileText, Map, MessageSquare, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Header } from '@/components/layout/header'
@@ -40,22 +40,22 @@ function LandingPage() {
               {t('landing.hero.subtitle')}
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
-              <SignedOut>
+              <Show when="signed-out">
                 <SignInButton mode="modal">
                   <Button size="lg" className="gap-2 shadow-md shadow-primary/25 transition-transform hover:scale-105">
                     {t('landing.hero.cta')}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </SignInButton>
-              </SignedOut>
-              <SignedIn>
+              </Show>
+              <Show when="signed-in">
                 <Link to="/dashboard">
                   <Button size="lg" className="gap-2 shadow-md shadow-primary/25 transition-transform hover:scale-105">
                     {t('dashboard.title')}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
-              </SignedIn>
+              </Show>
             </div>
           </div>
         </section>
