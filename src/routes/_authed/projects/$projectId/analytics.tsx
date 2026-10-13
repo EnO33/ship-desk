@@ -16,7 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { RouteLoading } from '@/components/shared/route-loading'
 import { RouteError } from '@/components/shared/route-error'
-import { getAnalyticsOverview, type AnalyticsOverview } from '@/server/functions/analytics'
+import { getAnalyticsOverview } from '@/server/functions/analytics'
 import { ANALYTICS_PERIODS, type AnalyticsPeriod } from '@/lib/constants'
 
 export const Route = createFileRoute('/_authed/projects/$projectId/analytics')({
