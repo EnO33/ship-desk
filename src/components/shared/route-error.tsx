@@ -1,12 +1,13 @@
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, type ErrorComponentProps } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
-export function RouteError({ error }: { error: Error }) {
+export function RouteError({ error }: ErrorComponentProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const message = error instanceof Error ? error.message : String(error)
 
   return (
     <div className="flex flex-1 items-center justify-center p-12">
@@ -16,7 +17,7 @@ export function RouteError({ error }: { error: Error }) {
           <div>
             <p className="font-medium">{t('common.error')}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {error.message}
+              {message}
             </p>
           </div>
           <Button

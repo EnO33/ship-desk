@@ -9,41 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ExploreRouteImport } from './routes/explore'
-import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WidgetSlugRouteImport } from './routes/widget/$slug'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
-import { Route as PSlugIndexRouteImport } from './routes/p/$slug/index'
-import { Route as PSlugRoadmapRouteImport } from './routes/p/$slug/roadmap'
-import { Route as PSlugFeedbackRouteImport } from './routes/p/$slug/feedback'
-import { Route as AuthedProjectsNewRouteImport } from './routes/_authed/projects/new'
+import { Route as WidgetSlugRouteImport } from './routes/widget/$slug'
 import { Route as AuthedProjectsProjectIdRouteRouteImport } from './routes/_authed/projects/$projectId/route'
-import { Route as AuthedProjectsProjectIdSettingsRouteImport } from './routes/_authed/projects/$projectId/settings'
-import { Route as AuthedProjectsProjectIdRoadmapRouteImport } from './routes/_authed/projects/$projectId/roadmap'
-import { Route as AuthedProjectsProjectIdFeedbackRouteImport } from './routes/_authed/projects/$projectId/feedback'
+import { Route as AuthedProjectsNewRouteImport } from './routes/_authed/projects/new'
+import { Route as PSlugIndexRouteImport } from './routes/p/$slug/index'
+import { Route as PSlugFeedbackRouteImport } from './routes/p/$slug/feedback'
+import { Route as PSlugRoadmapRouteImport } from './routes/p/$slug/roadmap'
 import { Route as AuthedProjectsProjectIdAnalyticsRouteImport } from './routes/_authed/projects/$projectId/analytics'
+import { Route as AuthedProjectsProjectIdFeedbackRouteImport } from './routes/_authed/projects/$projectId/feedback'
+import { Route as AuthedProjectsProjectIdRoadmapRouteImport } from './routes/_authed/projects/$projectId/roadmap'
+import { Route as AuthedProjectsProjectIdSettingsRouteImport } from './routes/_authed/projects/$projectId/settings'
 import { Route as AuthedProjectsProjectIdChangelogIndexRouteImport } from './routes/_authed/projects/$projectId/changelog/index'
 import { Route as AuthedProjectsProjectIdChangelogNewRouteImport } from './routes/_authed/projects/$projectId/changelog/new'
 import { Route as AuthedProjectsProjectIdChangelogChangelogIdEditRouteImport } from './routes/_authed/projects/$projectId/changelog/$changelogId/edit'
 
-const ExploreRoute = ExploreRouteImport.update({
-  id: '/explore',
-  path: '/explore',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WidgetSlugRoute = WidgetSlugRouteImport.update({
-  id: '/widget/$slug',
-  path: '/widget/$slug',
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
@@ -51,25 +46,10 @@ const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthedRoute,
 } as any)
-const PSlugIndexRoute = PSlugIndexRouteImport.update({
-  id: '/p/$slug/',
-  path: '/p/$slug/',
+const WidgetSlugRoute = WidgetSlugRouteImport.update({
+  id: '/widget/$slug',
+  path: '/widget/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const PSlugRoadmapRoute = PSlugRoadmapRouteImport.update({
-  id: '/p/$slug/roadmap',
-  path: '/p/$slug/roadmap',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PSlugFeedbackRoute = PSlugFeedbackRouteImport.update({
-  id: '/p/$slug/feedback',
-  path: '/p/$slug/feedback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthedProjectsNewRoute = AuthedProjectsNewRouteImport.update({
-  id: '/projects/new',
-  path: '/projects/new',
-  getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedProjectsProjectIdRouteRoute =
   AuthedProjectsProjectIdRouteRouteImport.update({
@@ -77,16 +57,30 @@ const AuthedProjectsProjectIdRouteRoute =
     path: '/projects/$projectId',
     getParentRoute: () => AuthedRoute,
   } as any)
-const AuthedProjectsProjectIdSettingsRoute =
-  AuthedProjectsProjectIdSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
-  } as any)
-const AuthedProjectsProjectIdRoadmapRoute =
-  AuthedProjectsProjectIdRoadmapRouteImport.update({
-    id: '/roadmap',
-    path: '/roadmap',
+const AuthedProjectsNewRoute = AuthedProjectsNewRouteImport.update({
+  id: '/projects/new',
+  path: '/projects/new',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const PSlugIndexRoute = PSlugIndexRouteImport.update({
+  id: '/p/$slug/',
+  path: '/p/$slug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PSlugFeedbackRoute = PSlugFeedbackRouteImport.update({
+  id: '/p/$slug/feedback',
+  path: '/p/$slug/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PSlugRoadmapRoute = PSlugRoadmapRouteImport.update({
+  id: '/p/$slug/roadmap',
+  path: '/p/$slug/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedProjectsProjectIdAnalyticsRoute =
+  AuthedProjectsProjectIdAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
     getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
   } as any)
 const AuthedProjectsProjectIdFeedbackRoute =
@@ -95,10 +89,16 @@ const AuthedProjectsProjectIdFeedbackRoute =
     path: '/feedback',
     getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
   } as any)
-const AuthedProjectsProjectIdAnalyticsRoute =
-  AuthedProjectsProjectIdAnalyticsRouteImport.update({
-    id: '/analytics',
-    path: '/analytics',
+const AuthedProjectsProjectIdRoadmapRoute =
+  AuthedProjectsProjectIdRoadmapRouteImport.update({
+    id: '/roadmap',
+    path: '/roadmap',
+    getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
+  } as any)
+const AuthedProjectsProjectIdSettingsRoute =
+  AuthedProjectsProjectIdSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
     getParentRoute: () => AuthedProjectsProjectIdRouteRoute,
   } as any)
 const AuthedProjectsProjectIdChangelogIndexRoute =
@@ -246,11 +246,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/explore': {
-      id: '/explore'
-      path: '/explore'
-      fullPath: '/explore'
-      preLoaderRoute: typeof ExploreRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed': {
@@ -260,18 +260,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/widget/$slug': {
-      id: '/widget/$slug'
-      path: '/widget/$slug'
-      fullPath: '/widget/$slug'
-      preLoaderRoute: typeof WidgetSlugRouteImport
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/dashboard': {
@@ -281,18 +274,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/widget/$slug': {
+      id: '/widget/$slug'
+      path: '/widget/$slug'
+      fullPath: '/widget/$slug'
+      preLoaderRoute: typeof WidgetSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/projects/$projectId': {
+      id: '/_authed/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof AuthedProjectsProjectIdRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/projects/new': {
+      id: '/_authed/projects/new'
+      path: '/projects/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof AuthedProjectsNewRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/p/$slug/': {
       id: '/p/$slug/'
       path: '/p/$slug'
       fullPath: '/p/$slug/'
       preLoaderRoute: typeof PSlugIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/p/$slug/roadmap': {
-      id: '/p/$slug/roadmap'
-      path: '/p/$slug/roadmap'
-      fullPath: '/p/$slug/roadmap'
-      preLoaderRoute: typeof PSlugRoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/p/$slug/feedback': {
@@ -302,32 +309,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PSlugFeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authed/projects/new': {
-      id: '/_authed/projects/new'
-      path: '/projects/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof AuthedProjectsNewRouteImport
-      parentRoute: typeof AuthedRoute
+    '/p/$slug/roadmap': {
+      id: '/p/$slug/roadmap'
+      path: '/p/$slug/roadmap'
+      fullPath: '/p/$slug/roadmap'
+      preLoaderRoute: typeof PSlugRoadmapRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authed/projects/$projectId': {
-      id: '/_authed/projects/$projectId'
-      path: '/projects/$projectId'
-      fullPath: '/projects/$projectId'
-      preLoaderRoute: typeof AuthedProjectsProjectIdRouteRouteImport
-      parentRoute: typeof AuthedRoute
-    }
-    '/_authed/projects/$projectId/settings': {
-      id: '/_authed/projects/$projectId/settings'
-      path: '/settings'
-      fullPath: '/projects/$projectId/settings'
-      preLoaderRoute: typeof AuthedProjectsProjectIdSettingsRouteImport
-      parentRoute: typeof AuthedProjectsProjectIdRouteRoute
-    }
-    '/_authed/projects/$projectId/roadmap': {
-      id: '/_authed/projects/$projectId/roadmap'
-      path: '/roadmap'
-      fullPath: '/projects/$projectId/roadmap'
-      preLoaderRoute: typeof AuthedProjectsProjectIdRoadmapRouteImport
+    '/_authed/projects/$projectId/analytics': {
+      id: '/_authed/projects/$projectId/analytics'
+      path: '/analytics'
+      fullPath: '/projects/$projectId/analytics'
+      preLoaderRoute: typeof AuthedProjectsProjectIdAnalyticsRouteImport
       parentRoute: typeof AuthedProjectsProjectIdRouteRoute
     }
     '/_authed/projects/$projectId/feedback': {
@@ -337,11 +330,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProjectsProjectIdFeedbackRouteImport
       parentRoute: typeof AuthedProjectsProjectIdRouteRoute
     }
-    '/_authed/projects/$projectId/analytics': {
-      id: '/_authed/projects/$projectId/analytics'
-      path: '/analytics'
-      fullPath: '/projects/$projectId/analytics'
-      preLoaderRoute: typeof AuthedProjectsProjectIdAnalyticsRouteImport
+    '/_authed/projects/$projectId/roadmap': {
+      id: '/_authed/projects/$projectId/roadmap'
+      path: '/roadmap'
+      fullPath: '/projects/$projectId/roadmap'
+      preLoaderRoute: typeof AuthedProjectsProjectIdRoadmapRouteImport
+      parentRoute: typeof AuthedProjectsProjectIdRouteRoute
+    }
+    '/_authed/projects/$projectId/settings': {
+      id: '/_authed/projects/$projectId/settings'
+      path: '/settings'
+      fullPath: '/projects/$projectId/settings'
+      preLoaderRoute: typeof AuthedProjectsProjectIdSettingsRouteImport
       parentRoute: typeof AuthedProjectsProjectIdRouteRoute
     }
     '/_authed/projects/$projectId/changelog/': {

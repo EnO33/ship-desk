@@ -11,8 +11,8 @@ import { nitro } from 'nitro/vite'
 const config = defineConfig({
   plugins: [
     devtools(),
+    // No hard-coded preset: Nitro detects the host (Vercel, Netlify...) at build time.
     nitro({
-      preset: 'netlify',
       rollupConfig: { external: [/^@sentry\//] },
     }),
     tsconfigPaths({ projects: ['./tsconfig.json'] }),
