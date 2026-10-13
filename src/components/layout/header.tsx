@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import {
-  SignedIn,
-  SignedOut,
+  Show,
   SignInButton,
   UserButton,
 } from '@clerk/tanstack-react-start'
@@ -34,19 +33,19 @@ export function Header() {
           <div className="mx-1 h-5 w-px bg-border" />
           <ThemeSwitcher />
           <LocaleSwitcher />
-          <SignedOut>
+          <Show when="signed-out">
             <SignInButton mode="modal">
               <Button size="sm">{t('common.signIn')}</Button>
             </SignInButton>
-          </SignedOut>
-          <SignedIn>
+          </Show>
+          <Show when="signed-in">
             <Link to="/dashboard">
               <Button variant="ghost" size="sm">
                 {t('dashboard.title')}
               </Button>
             </Link>
             <UserButton />
-          </SignedIn>
+          </Show>
         </div>
       </div>
     </header>
